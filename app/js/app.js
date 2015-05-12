@@ -1,18 +1,14 @@
 'use strict';
 
 var socialNetworkApp = angular
-    .module('socialNetworkApp', ['ngResource', 'ngRoute'])
+    .module('socialNetworkApp', ['ngResource', 'ngRoute', 'ngStorage'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'partials/guest/guest.html'
             })
-            .when('/login', {
-                templateUrl: 'partials/guest/login.html',
-                controller: ''
+            .when('/home', {
+                templateUrl: 'partials/home/news-feed.html'
             })
-            .when('/register', {
-                templateUrl: 'partials/guest/register.html',
-                controller: ''
-            })
-    });
+    })
+    .constant('baseUrl', 'http://softuni-social-network.azurewebsites.net/api/');
