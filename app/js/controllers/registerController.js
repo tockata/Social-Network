@@ -1,4 +1,6 @@
-socialNetworkApp.controller('registerController',
+'use strict';
+
+socialNetworkApp.controller('RegisterController',
     ['$scope', 'userData', 'credentials', function ($scope, userData, credentials) {
         $scope.register = register;
 

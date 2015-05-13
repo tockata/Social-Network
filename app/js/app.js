@@ -5,10 +5,10 @@ var socialNetworkApp = angular
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
-                templateUrl: 'partials/guest/guest.html'
+                templateUrl: 'partials/home.html'
             })
-            .when('/home', {
-                templateUrl: 'partials/home/news-feed.html'
+            .otherwise({
+                redirectTo: '/'
             })
     })
     .constant('baseUrl', 'http://softuni-social-network.azurewebsites.net/api/');

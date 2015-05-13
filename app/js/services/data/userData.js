@@ -1,3 +1,5 @@
+'use strict';
+
 socialNetworkApp.factory('userData', ['$resource', 'baseUrl', function ($resource, baseUrl) {
     function loginUser(user) {
         return $resource(baseUrl + 'users/login')

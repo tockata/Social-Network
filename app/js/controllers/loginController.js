@@ -1,5 +1,7 @@
-socialNetworkApp.controller('loginController',
-    ['$scope', 'userData', 'credentials', function ($scope, userData, credentials) {
+'use strict';
+
+socialNetworkApp.controller('LoginController',
+    ['$scope', '$route', 'userData', 'credentials', function ($scope, $route, userData, credentials) {
         $scope.rememberMe = false;
         $scope.login = login;
 
@@ -15,6 +17,7 @@ socialNetworkApp.controller('loginController',
                     }
 
                     $scope.loginForm.$setPristine();
+                    $route.reload();
                 }, function (error) {
                     console.log(error.statusText);
                 })
