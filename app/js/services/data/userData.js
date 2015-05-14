@@ -1,6 +1,6 @@
 'use strict';
 
-socialNetworkApp.factory('userData', ['$resource', 'baseUrl', function ($resource, baseUrl) {
+socialNetworkApp.factory('userData', ['$resource', 'baseUrl', 'credentials', function ($resource, baseUrl, credentials) {
     function loginUser(user) {
         return $resource(baseUrl + 'users/login')
             .save(user);
@@ -11,9 +11,18 @@ socialNetworkApp.factory('userData', ['$resource', 'baseUrl', function ($resourc
             .save(user);
     }
 
-    function logoutUser(user) {
-        return $resource(baseUrl + 'users/logout')
-            .save(user);
+    function logoutUser() {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'users/logout',
+            null,
+            {
+                'save': {
+                    method: 'POST',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .save();
     }
 
     return {

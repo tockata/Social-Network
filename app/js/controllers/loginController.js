@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.controller('LoginController',
-    ['$scope', '$route', 'userData', 'credentials', function ($scope, $route, userData, credentials) {
+    ['$scope', '$route', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $route, $timeout, userData, credentials, toaster) {
         $scope.rememberMe = false;
         $scope.login = login;
 
@@ -16,10 +16,18 @@ socialNetworkApp.controller('LoginController',
                         $scope.$storage = credentials.saveInSessionStorage(data.access_token, data.token_type);
                     }
 
+                    toaster.pop('success', 'Login successful!');
                     $scope.loginForm.$setPristine();
-                    $route.reload();
+                    reloadRoute(2000);
                 }, function (error) {
-                    console.log(error.statusText);
-                })
+                    toaster.pop('error', 'Login error!', error.data.error_description);
+                });
         }
-}]);
+
+        function reloadRoute(time) {
+            $timeout(function () {
+                $route.reload();
+            }, time);
+        }
+    }
+]);

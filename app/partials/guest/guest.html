@@ -1,4 +1,4 @@
-<header ng-include="'partials/guest/guest-header.html'"></header>
+<header ng-include="'partials/guest/header.html'"></header>
 
 <div id="jumbotron" class="row">
     <div class="jumbotron col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1">
@@ -8,6 +8,7 @@
 </div>
 <div class="row">
     <div class="col-md-5 col-md-offset-1" ng-controller="LoginController">
+        <toaster-container toaster-options="{'animation-class': 'toast-center'}"></toaster-container>
         <form name="loginForm" class="form-horizontal" autocomplete="off">
             <fieldset>
                 <div class="row">

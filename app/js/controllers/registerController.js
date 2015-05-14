@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.controller('RegisterController',
-    ['$scope', 'userData', 'credentials', function ($scope, userData, credentials) {
+    ['$scope', '$route', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $route, $timeout, userData, credentials, toaster) {
         $scope.register = register;
 
         function register(user, registerForm) {
@@ -11,8 +11,17 @@ socialNetworkApp.controller('RegisterController',
                     $scope.user = {};
                     credentials.saveInSessionStorage(data.access_token, data.token_type);
                     $scope.registerForm.$setPristine();
+                    toaster.pop('success', 'Register successful!');
+                    reloadRoute(2000);
                 }, function (error) {
-                    console.log(error.statusText);
+                    toaster.pop('error', 'Registration error!');
                 })
         }
-}]);
+
+        function reloadRoute(time) {
+            $timeout(function () {
+                $route.reload();
+            }, time);
+        }
+    }
+]);
