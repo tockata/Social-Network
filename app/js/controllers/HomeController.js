@@ -1,20 +1,28 @@
 'use strict';
 
 socialNetworkApp.controller('HomeController',
-    ['$scope', '$location', 'userData', 'credentials', function ($scope, $location, userData, credentials) {
-        $scope.isLogged = credentials.isLogged();
+    ['$scope', '$route', 'userData', 'friendsData', 'credentials', 'toaster', function ($scope, $route, userData, friendsData, credentials, toaster) {
         $scope.user = {};
+        $scope.toggleShowRequestsDetail = toggleShowRequestsDetail;
+        $scope.requestDetailsShown = false;
 
-        if($scope.isLogged) {
+        if(credentials.checkForSessionToken()) {
+            $scope.isLogged = true;
             userData.getLoggedUserData()
                 .$promise
                 .then(function (data) {
+                    $scope.isLogged = true;
                     saveUserData(data);
+                    friendsData.getFriendRequests()
+                        .$promise
+                        .then(function (data) {
+                            $scope.requestsCount = data.length;
+                            $scope.requests = data;
+                        });
                 }, function (error) {
-                    credentials.deleteCredentials();
+                    $scope.user = {};
+                    $scope.isLogged = false;
                 });
-        } else {
-            $scope.user = {};
         }
 
         function saveUserData(data) {
@@ -25,5 +33,9 @@ socialNetworkApp.controller('HomeController',
             $scope.user.profileImageData = data.profileImageData;
             $scope.user.gender = data.gender;
             $scope.user.coverImageData = data.coverImageData;
+        }
+
+        function toggleShowRequestsDetail() {
+            $scope.requestDetailsShown = !$scope.requestDetailsShown;
         }
     }]);

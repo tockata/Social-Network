@@ -1,3 +1,21 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 60px;
+    background-color: #f5f5f5;
+    padding-top: 10px;
+}
+
 .jumbotron {
 	padding: 20px;
 	border-radius: 10px;
@@ -7,24 +25,18 @@ body>div>div.row {
 	margin: 0;
 }
 
-footer {
-	background-color: #f5f5f5;
-	padding: 10px;
+.navbar img {
+    width: 50px;
 }
 
-growl-notification {
-    position: fixed;
-    top: 150px;
-    right: 10px;
-    z-index: 1000;
-}
-
-growl-notifications growl-notification {
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 15px 30px;
-    width: 200px;
+.modal {
     display: block;
-    border-radius: 5px;
-    margin-top: 15px;
+}
+
+.modal img {
+    width: 50px;
+}
+
+.request {
+    border-bottom: 1px dotted dimgray;
 }

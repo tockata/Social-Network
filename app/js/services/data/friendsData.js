@@ -23,6 +23,7 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             {
                 'get': {
                     method: 'GET',
+                    isArray: true,
                     headers: {'Authorization': authorization}
                 }
             })

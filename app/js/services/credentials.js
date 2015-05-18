@@ -19,7 +19,7 @@ socialNetworkApp.factory('credentials',
             $sessionStorage.$reset();
         }
 
-        function checkAuthorization() {
+        function checkForSessionToken() {
             if ($sessionStorage.authorization || $localStorage.authorization) {
                 return true;
             }
@@ -39,7 +39,7 @@ socialNetworkApp.factory('credentials',
             saveInLocalStorage: saveInLocalStorage,
             saveInSessionStorage: saveInSessionStorage,
             deleteCredentials: deleteCredentials,
-            isLogged: checkAuthorization,
+            checkForSessionToken: checkForSessionToken,
             getAuthorization: getAuthorization
         }
 }]);

@@ -2,7 +2,7 @@
 
 socialNetworkApp.controller('LogoutController',
     ['$scope', '$location', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $location, $timeout, userData, credentials, toaster){
-        if(!credentials.isLogged()) {
+        if(!credentials.checkForSessionToken()) {
             redirectToHome(0);
             return;
         }
@@ -18,7 +18,7 @@ socialNetworkApp.controller('LogoutController',
                     toaster.pop('success', 'Logout successful!');
                     redirectToHome(3000);
                 }, function (error) {
-                    toaster.pop('error', 'Logout error!', error.data.error_description);
+                    toaster.pop('error', 'Logout error!', error.data.message);
                     redirectToHome(3000);
                 })
 
