@@ -25,9 +25,24 @@ socialNetworkApp.factory('userData', ['$resource', 'baseUrl', 'credentials', fun
             .save();
     }
 
+    function getLoggedUserData() {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'me',
+            null,
+            {
+                'get': {
+                    method: 'GET',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
+
     return {
         login: loginUser,
         register: registerUser,
-        logout: logoutUser
+        logout: logoutUser,
+        getLoggedUserData: getLoggedUserData
     }
 }]);
