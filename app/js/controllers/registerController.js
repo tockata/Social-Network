@@ -14,7 +14,7 @@ socialNetworkApp.controller('RegisterController',
                     toaster.pop('success', 'Register successful!');
                     reloadRoute(2000);
                 }, function (error) {
-                    toaster.pop('error', 'Registration error!');
+                    toaster.pop('error', 'Registration error!', error.data.message);
                 })
         }
 

@@ -21,7 +21,6 @@ socialNetworkApp.controller('LogoutController',
                     toaster.pop('error', 'Logout error!', error.data.message);
                     redirectToHome(3000);
                 })
-
         }
 
         function redirectToHome(time) {

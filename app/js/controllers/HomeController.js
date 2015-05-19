@@ -3,7 +3,7 @@
 socialNetworkApp.controller('HomeController',
     ['$scope', '$route', 'userData', 'friendsData', 'credentials', 'toaster', function ($scope, $route, userData, friendsData, credentials, toaster) {
         $scope.user = {};
-        $scope.toggleShowRequestsDetail = toggleShowRequestsDetail;
+        $scope.showRequestsDetail = showRequestsDetail;
         $scope.requestDetailsShown = false;
 
         if(credentials.checkForSessionToken()) {
@@ -35,7 +35,7 @@ socialNetworkApp.controller('HomeController',
             $scope.user.coverImageData = data.coverImageData;
         }
 
-        function toggleShowRequestsDetail() {
+        function showRequestsDetail() {
             $scope.requestDetailsShown = !$scope.requestDetailsShown;
         }
     }]);

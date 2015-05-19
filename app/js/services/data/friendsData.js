@@ -33,7 +33,7 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
     function sendFriendRequest(name) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'requests/' + name,
+            baseUrl + 'me/requests/' + name,
             null,
             {
                 'save': {
@@ -47,7 +47,7 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
     function approveFriendRequest(requestId) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'requests/' + requestId + '?status=approved',
+            baseUrl + 'me/requests/' + requestId + '?status=approved',
             null,
             {
                 'update': {
@@ -61,7 +61,7 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
     function rejectFriendRequest(requestId) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'requests/' + requestId + '?status=rejected',
+            baseUrl + 'me/requests/' + requestId + '?status=rejected',
             null,
             {
                 'update': {

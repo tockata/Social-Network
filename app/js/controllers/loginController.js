@@ -20,7 +20,7 @@ socialNetworkApp.controller('LoginController',
                     $scope.loginForm.$setPristine();
                     reloadRoute(2000);
                 }, function (error) {
-                    toaster.pop('error', 'Login error!', error.data.error_description);
+                    toaster.pop('error', 'Login error!', error.data.message);
                 });
         }
 
