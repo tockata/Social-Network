@@ -20,11 +20,7 @@ socialNetworkApp.factory('credentials',
         }
 
         function checkForSessionToken() {
-            if ($sessionStorage.authorization || $localStorage.authorization) {
-                return true;
-            }
-
-            return false;
+            return ($sessionStorage.authorization || $localStorage.authorization);
         }
 
         function getAuthorization() {

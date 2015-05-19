@@ -28,6 +28,5 @@ socialNetworkApp.controller('LogoutController',
                 $location.path('/');
             }, time);
         }
-
     }
 ]);

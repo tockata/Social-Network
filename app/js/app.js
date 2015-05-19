@@ -11,8 +11,21 @@ var socialNetworkApp = angular
                 templateUrl: 'partials/user/logout.html',
                 controller: 'LogoutController'
             })
+            .when('/profile', {
+                templateUrl: 'partials/user/edit-profile.html',
+                controller: 'EditProfileController'
+            })
             .otherwise({
                 redirectTo: '/'
             })
+    })
+    .value('loggedUser', {
+        id: null,
+        username: null,
+        name: null,
+        email: null,
+        profileImageData: null,
+        gender: null,
+        coverImageData: null
     })
     .constant('baseUrl', 'http://softuni-social-network.azurewebsites.net/api/');

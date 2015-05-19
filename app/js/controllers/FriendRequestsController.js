@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.controller('FriendRequestsController',
-    ['$scope', 'friendsData', 'toaster', function ($scope, friendsData, toaster) {
+    ['$scope', '$route', 'friendsData', 'toaster', function ($scope, $route, friendsData, toaster) {
         $scope.acceptRequest = acceptRequest;
         $scope.rejectRequest = rejectRequest;
         $scope.cancel = cancel;
@@ -24,6 +24,7 @@ socialNetworkApp.controller('FriendRequestsController',
                                 $scope.requestDetailsShown = false;
                             }
                         });
+                    $route.reload();
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });
