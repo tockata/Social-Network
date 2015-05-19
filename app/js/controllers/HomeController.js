@@ -22,6 +22,7 @@ socialNetworkApp.controller('HomeController',
                 }, function (error) {
                     $scope.user = {};
                     $scope.isLogged = false;
+                    credentials.deleteCredentials();
                 });
         }
 
@@ -36,6 +37,8 @@ socialNetworkApp.controller('HomeController',
         }
 
         function showRequestsDetail() {
-            $scope.requestDetailsShown = !$scope.requestDetailsShown;
+            if($scope.requestsCount) {
+                $scope.requestDetailsShown = true;
+            }
         }
     }]);

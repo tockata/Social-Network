@@ -13,7 +13,7 @@
         <div class="collapse navbar-collapse pull-right" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <li><a href="#/users/{{user.username}}">
-                    <img src="" ng-src="data:image/jpeg;base64,{{user.profileImageData}}" ng-if="user.profileImageData">
+                    <img src="" ng-src="data:image/jpeg;base64,{{user.profileImageData}}" alt="{{user.name}}" ng-if="user.profileImageData">
                     <span>{{user.name}}</span>
                 </a></li>
                 <li class="active"><a href="#/">News feed<span class="sr-only">(current)</span></a></li>

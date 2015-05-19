@@ -9,6 +9,21 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
             {
                 'get': {
                     method: 'GET',
+                    isArray: true,
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
+
+    function getFriendsPreview() {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'me/friends/preview',
+            null,
+            {
+                'get': {
+                    method: 'GET',
                     headers: {'Authorization': authorization}
                 }
             })
@@ -74,6 +89,7 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
 
     return {
         getFriends: getFriends,
+        getFriendsPreview: getFriendsPreview,
         getFriendRequests: getFriendRequests,
         sendFriendRequest: sendFriendRequest,
         approveFriendRequest: approveFriendRequest,

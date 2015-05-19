@@ -37,6 +37,22 @@ body>div>div.row {
     width: 50px;
 }
 
+.list-group img {
+    max-height: 100%;
+    display: inline-block;
+    vertical-align: text-bottom;
+    float: left;
+}
+
+.list-group h4 {
+    display: inline-block;
+    float: right;
+}
+
+.list-group a {
+    height: 100px;
+}
+
 .request {
-    border-bottom: 1px dotted dimgray;
+    border-bottom: 1px solid dimgray;
 }
