@@ -1,7 +1,10 @@
 'use strict';
 
 socialNetworkApp.controller('FriendsSidebarController',
-    ['$scope', 'friendsData', 'toaster', function ($scope, friendsData, toaster) {
+    ['$scope', 'credentials', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, credentials, friendsData, toaster, defaultProfileImageData) {
+        $scope.userName = credentials.getLoggedUser();
+        $scope.defaultProfileImageData = defaultProfileImageData;
+
         friendsData.getFriendsPreview()
             .$promise
             .then(function (data) {

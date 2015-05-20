@@ -2,10 +2,6 @@
 
 socialNetworkApp.controller('ChangePasswordController',
     ['$scope', '$location', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $location, $timeout, userData, credentials, toaster){
-        if(!credentials.checkForSessionToken()) {
-            redirectToHome(0);
-        }
-
         $scope.changePassword = changePassword;
 
         function changePassword(password, changePasswordForm) {

@@ -30,7 +30,7 @@ body>div>div.row {
 }
 
 .navbar img {
-    width: 50px;
+    width: 30px;
 }
 
 .modal {
@@ -69,4 +69,21 @@ body>div>div.row {
     position: absolute;
     top: 50px;
     right: 5px;
+}
+
+.friends-img {
+    max-width: 100px;
+}
+
+#friend-name {
+    float: right;
+}
+
+#friend-container {
+    width: 100%;
+    height: 100%;
+}
+
+td:hover {
+    background-color: #cccccc;
 }

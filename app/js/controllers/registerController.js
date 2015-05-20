@@ -9,7 +9,7 @@ socialNetworkApp.controller('RegisterController',
                 .$promise
                 .then(function (data) {
                     $scope.user = {};
-                    credentials.saveInSessionStorage(data.access_token, data.token_type);
+                    credentials.saveTokenInSessionStorage(data.access_token, data.token_type);
                     $scope.registerForm.$setPristine();
                     toaster.pop('success', 'Register successful!');
                     reloadRoute(2000);

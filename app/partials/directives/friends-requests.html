@@ -8,7 +8,8 @@
             </div>
             <div class="request" ng-repeat="request in requests">
                 <div class="modal-body">
-                    <img src="" ng-src="data:image/jpeg;base64,{{request.user.profileImageData}}" alt="{{request.user.name}}">
+                    <img class="img-thumbnail" src="" ng-src="data:image/jpeg;base64,{{request.user.profileImageData}}" alt="{{request.user.name}}" ng-if="request.user.profileImageData">
+                    <img class="img-thumbnail" src="" ng-src="{{defaultProfileImageData}}" alt="{{request.user.name}}" ng-if="!request.user.profileImageData">
                     <span>{{request.user.name}}</span>
                 </div>
                 <div class="modal-footer">

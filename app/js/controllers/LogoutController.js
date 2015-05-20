@@ -2,11 +2,6 @@
 
 socialNetworkApp.controller('LogoutController',
     ['$scope', '$location', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $location, $timeout, userData, credentials, toaster){
-        if(!credentials.checkForSessionToken()) {
-            redirectToHome(0);
-            return;
-        }
-
         $scope.logoutUser = logoutUser;
         $scope.logoutUser();
 
@@ -16,10 +11,10 @@ socialNetworkApp.controller('LogoutController',
                 .then(function (data) {
                     credentials.deleteCredentials();
                     toaster.pop('success', 'Logout successful!');
-                    redirectToHome(3000);
+                    redirectToHome(2000);
                 }, function (error) {
                     toaster.pop('error', 'Logout error!', error.data.message);
-                    redirectToHome(3000);
+                    redirectToHome(2000);
                 })
         }
 

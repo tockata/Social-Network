@@ -1,35 +1,41 @@
 'use strict';
 
 socialNetworkApp.controller('UserHeaderController',
-    ['$scope', '$location', '$route', 'credentials', 'userData', 'friendsData', function ($scope, $location, $route, credentials, userData, friendsData){
+    ['$scope', '$location', '$route', '$timeout', 'credentials', 'userData', 'friendsData', 'defaultProfileImageData', function ($scope, $location, $route, $timeout, credentials, userData, friendsData, defaultProfileImageData){
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
 
-        $scope.user = {};
+        if(!credentials.checkForSessionToken()) {
+            redirectToHome(0);
+        }
+
         $scope.showRequestsDetail = showRequestsDetail;
         $scope.requestDetailsShown = false;
         $scope.searchUsers = searchUsers;
         $scope.searchResultsShown = false;
+        $scope.defaultProfileImageData = defaultProfileImageData;
 
-        userData.getLoggedUserData()
+        if(!credentials.getLoggedUser()) {
+            userData.getLoggedUserData()
+                .$promise
+                .then(function (data) {
+                    $scope.user = data;
+                    credentials.saveLoggedUser(data);
+                }, function (error) {
+                    $scope.user = {};
+                    credentials.deleteCredentials();
+                    $route.reload();
+                });
+        } else {
+            $scope.user = credentials.getLoggedUser();
+        }
+
+        friendsData.getFriendRequests()
             .$promise
             .then(function (data) {
-                $scope.user = data;
-                if(!credentials.getLoggedUser()) {
-                    credentials.saveLoggedUser(data);
-                }
-
-                friendsData.getFriendRequests()
-                    .$promise
-                    .then(function (data) {
-                        $scope.requestsCount = data.length;
-                        $scope.requests = data;
-                    });
-            }, function (error) {
-                $scope.user = {};
-                credentials.deleteCredentials();
-                $route.reload();
+                $scope.requestsCount = data.length;
+                $scope.requests = data;
             });
 
         function showRequestsDetail() {
@@ -52,6 +58,12 @@ socialNetworkApp.controller('UserHeaderController',
                 }, function (error) {
                     $scope.searchResultsShown = false;
                 });
+        }
+
+        function redirectToHome(time) {
+            $timeout(function () {
+                $location.path('/');
+            }, time);
         }
     }
     ]);

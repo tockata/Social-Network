@@ -1,10 +1,11 @@
 'use strict';
 
 socialNetworkApp.controller('FriendRequestsController',
-    ['$scope', '$route', 'friendsData', 'toaster', function ($scope, $route, friendsData, toaster) {
+    ['$scope', '$route', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $route, friendsData, toaster, defaultProfileImageData) {
         $scope.acceptRequest = acceptRequest;
         $scope.rejectRequest = rejectRequest;
         $scope.cancel = cancel;
+        $scope.defaultProfileImageData = defaultProfileImageData;
 
         function cancel(requestId) {
             $scope.requestDetailsShown = false;

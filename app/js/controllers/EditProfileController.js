@@ -2,10 +2,6 @@
 
 socialNetworkApp.controller('EditProfileController',
     ['$scope', '$location', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $location, $timeout, userData, credentials, toaster){
-        if(!credentials.checkForSessionToken()) {
-            redirectToHome(0);
-        }
-
         $scope.user = credentials.getLoggedUser();
         $scope.editProfile = editProfile;
 
