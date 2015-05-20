@@ -5,7 +5,7 @@
         <div class="list-group">
             <div class="friends-preview" ng-repeat="friend in friends">
                 <a href="#/users/{{friend.username}}" class="list-group-item">
-                    <img src="" ng-src="data:image/jpeg;base64,{{friend.profileImageData}}" alt="{{friend.name}}"/>
+                    <img src="" ng-src="{{friend.profileImageData}}" alt="{{friend.name}}"/>
                     <h4 class="list-group-item-heading">{{friend.name}}</h4>
                 </a>
             </div>

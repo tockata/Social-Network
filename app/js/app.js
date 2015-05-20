@@ -1,7 +1,7 @@
 'use strict';
 
 var socialNetworkApp = angular
-    .module('socialNetworkApp', ['ngResource', 'ngRoute', 'ngStorage', 'toaster'])
+    .module('socialNetworkApp', ['ngResource', 'ngRoute', 'ngStorage', 'toaster', 'naif.base64'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -18,14 +18,5 @@ var socialNetworkApp = angular
             .otherwise({
                 redirectTo: '/'
             })
-    })
-    .value('loggedUser', {
-        id: null,
-        username: null,
-        name: null,
-        email: null,
-        profileImageData: null,
-        gender: null,
-        coverImageData: null
     })
     .constant('baseUrl', 'http://softuni-social-network.azurewebsites.net/api/');

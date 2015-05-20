@@ -7,30 +7,12 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" ng-controller="RegisterController">
-        <form name="registerForm" class="form-horizontal" autocomplete="off">
+    <div class="col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" ng-controller="EditProfileController">
+        <form name="editProfileForm" class="form-horizontal" autocomplete="off">
             <fieldset>
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3">
-                        <legend>Register</legend>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerUsername" class="col-md-3 control-label">Username</label>
-                    <div class="col-md-9">
-                        <input type="text" class="form-control" ng-model="user.username" id="registerUsername" required="required" placeholder="Username">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword" class="col-md-3 control-label">Password</label>
-                    <div class="col-md-9">
-                        <input type="password" class="form-control" ng-model="user.password" id="registerPassword" required="required" placeholder="Password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="registerConfirmPassword" class="col-md-3 control-label">Confirm password</label>
-                    <div class="col-md-9">
-                        <input type="password" class="form-control" ng-model="user.confirmPassword" id="registerConfirmPassword" required="required" placeholder="Confirm password">
+                        <legend>Edit profile</legend>
                     </div>
                 </div>
                 <div class="form-group">
@@ -46,17 +28,31 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="inputProfileImageData" class="col-md-3 control-label">Profile picture<br />Limit: 128kb</label>
+                    <div class="col-md-9">
+                        <input type="file" class="form-control" ng-model="user.profileImageData" base-sixty-four-input id="inputProfileImageData" placeholder="img">
+                        <img class="img-thumbnail img-responsive" base-sixty-four-image="user.profileImageData" alt="{{user.name}}" ng-if="user.profileImageData"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputCoverImageData" class="col-md-3 control-label">Cover picture<br />Limit: 1024kb</label>
+                    <div class="col-md-9">
+                        <input type="file" class="form-control" ng-model="user.coverImageData" base-sixty-four-input id="inputCoverImageData" placeholder="img">
+                        <img class="img-thumbnail img-responsive" base-sixty-four-image="user.coverImageData" alt="{{user.name}}" ng-if="user.coverImageData"/>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-md-3 control-label">Gender</label>
                     <div class="col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" name="gender" value="mail">Male
+                                <input type="radio" ng-model="user.gender" name="gender" value="male">Male
                             </label>
                             <label>
-                                <input type="radio" name="gender" value="female">Female
+                                <input type="radio" ng-model="user.gender" name="gender" value="female">Female
                             </label>
                             <label>
-                                <input type="radio" name="gender" value="other">Other
+                                <input type="radio" ng-model="user.gender" name="gender" value="other">Other
                             </label>
                         </div>
                         <div class="radio">
@@ -66,7 +62,7 @@
                 <div class="form-group">
                     <div class="col-md-9 col-lg-offset-3">
                         <button type="reset" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-primary" ng-click="register(user, registerForm)">Register</button>
+                        <button type="submit" class="btn btn-primary" ng-click="editProfile(user, editProfileForm)">Edit</button>
                     </div>
                 </div>
             </fieldset>

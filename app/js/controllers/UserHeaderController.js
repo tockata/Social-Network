@@ -14,6 +14,10 @@ socialNetworkApp.controller('UserHeaderController',
             .$promise
             .then(function (data) {
                 $scope.user = data;
+                if(!credentials.getLoggedUser()) {
+                    credentials.saveLoggedUser(data);
+                }
+
                 friendsData.getFriendRequests()
                     .$promise
                     .then(function (data) {

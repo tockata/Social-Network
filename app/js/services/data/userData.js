@@ -25,6 +25,20 @@ socialNetworkApp.factory('userData', ['$resource', 'baseUrl', 'credentials', fun
             .save();
     }
 
+    function editUser(user) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'me',
+            null,
+            {
+                'put': {
+                    method: 'PUT',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .put(user);
+    }
+
     function getLoggedUserData() {
         var authorization = credentials.getAuthorization();
         return $resource(
@@ -43,6 +57,7 @@ socialNetworkApp.factory('userData', ['$resource', 'baseUrl', 'credentials', fun
         login: loginUser,
         register: registerUser,
         logout: logoutUser,
+        edit: editUser,
         getLoggedUserData: getLoggedUserData
     }
 }]);

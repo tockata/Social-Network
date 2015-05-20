@@ -2,6 +2,8 @@
 
 socialNetworkApp.factory('credentials',
     ['$sessionStorage', '$localStorage', function ($sessionStorage, $localStorage) {
+        var loggedUser = false;
+
         function saveInLocalStorage(sessionToken, tokenType){
             $localStorage.$default({
                 'authorization': tokenType + ' ' + sessionToken
@@ -17,6 +19,7 @@ socialNetworkApp.factory('credentials',
         function deleteCredentials() {
             $localStorage.$reset();
             $sessionStorage.$reset();
+            loggedUser = false;
         }
 
         function checkForSessionToken() {
@@ -31,11 +34,21 @@ socialNetworkApp.factory('credentials',
             }
         }
 
+        function saveLoggedUser(user) {
+            loggedUser = user;
+        }
+
+        function getLoggedUser() {
+            return loggedUser;
+        }
+
         return {
             saveInLocalStorage: saveInLocalStorage,
             saveInSessionStorage: saveInSessionStorage,
             deleteCredentials: deleteCredentials,
             checkForSessionToken: checkForSessionToken,
-            getAuthorization: getAuthorization
+            getAuthorization: getAuthorization,
+            saveLoggedUser: saveLoggedUser,
+            getLoggedUser: getLoggedUser
         }
 }]);
