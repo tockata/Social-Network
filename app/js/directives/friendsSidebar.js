@@ -7,4 +7,3 @@ socialNetworkApp.directive('friendsSidebar', function () {
         controller: 'FriendsSidebarController'
     }
 });
-

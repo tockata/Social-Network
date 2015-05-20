@@ -1,0 +1,8 @@
+<ul id="search-results" class="list-group">
+    <li class="list-group-item" ng-repeat="user in searchResults">
+        <a href="#/users/{{user.username}}" class="list-group-item">
+            <img src="" ng-src="{{user.profileImageData}}" alt="{{user.name}}"/>
+            <span class="list-group-item-heading">{{user.name}}</span>
+        </a>
+    </li>
+</ul>

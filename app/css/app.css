@@ -60,3 +60,13 @@ body>div>div.row {
 .request {
     border-bottom: 1px solid dimgray;
 }
+
+#search {
+    position: relative;
+}
+
+#search-results {
+    position: absolute;
+    top: 50px;
+    right: 5px;
+}
