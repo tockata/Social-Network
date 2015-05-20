@@ -15,6 +15,10 @@ var socialNetworkApp = angular
                 templateUrl: 'partials/user/edit-profile.html',
                 controller: 'EditProfileController'
             })
+            .when('/profile/password', {
+                templateUrl: 'partials/user/change-password.html',
+                controller: 'ChangePasswordController'
+            })
             .otherwise({
                 redirectTo: '/'
             })

@@ -36,4 +36,3 @@ socialNetworkApp.controller('EditProfileController',
         }
     }
     ]);
-
