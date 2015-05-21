@@ -5,7 +5,8 @@ socialNetworkApp.controller('FriendsSidebarController',
         $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
 
-        if(!$routeParams.username) {
+        if(!$routeParams.username || $routeParams.username === $scope.user.username) {
+            $scope.username = $scope.user.username;
             friendsData.getFriendsPreview()
                 .$promise
                 .then(function (data) {
@@ -15,6 +16,7 @@ socialNetworkApp.controller('FriendsSidebarController',
                     toaster.pop('error', 'Error!', error.data.message);
                 });
         } else {
+            $scope.username = $routeParams.username;
             friendsData.getOtherUserFriends($routeParams.username)
                 .$promise
                 .then(function (data) {

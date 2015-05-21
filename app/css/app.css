@@ -96,3 +96,50 @@ body>div>div.row {
 td:hover {
     background-color: #cccccc;
 }
+
+#message-input img {
+    width: 30px;
+}
+
+div.wall-header {
+    position: relative;
+    margin-top: -20px !important;
+    margin-bottom: 15px !important;
+}
+
+.wall-header>div {
+    position: absolute;
+    width: 600px;
+    top: 50px;
+    left: 150px;
+}
+
+.wall-header>img {
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+    height: 250px;
+}
+
+.wall-header>div>img {
+    object-fit: cover;
+    overflow: hidden;
+    width: 250px;
+    height: 250px;
+    float: left;
+}
+
+.wall-header>div>div {
+    float: left;
+    margin-left: 30px;
+    padding-top: 30px;
+}
+
+.wall-header>div>div>h3 {
+    color: white;
+    font-size: 30px;
+}
+
+.wall-header>div>div>button {
+    font-size: 20px;
+}

@@ -18,27 +18,29 @@
                 <div class="form-group">
                     <label for="registerName" class="col-md-3 control-label">Name</label>
                     <div class="col-md-9">
-                        <input type="text" class="form-control" ng-model="user.name" id="registerName" required="required" placeholder="Name">
+                        <input type="text" class="form-control" ng-model="editUser.name" id="registerName" required="required" placeholder="Name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail" class="col-md-3 control-label">Email</label>
                     <div class="col-md-9">
-                        <input type="email" class="form-control" ng-model="user.email" id="inputEmail" required="required" placeholder="Email">
+                        <input type="email" class="form-control" ng-model="editUser.email" id="inputEmail" required="required" placeholder="Email">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputProfileImageData" class="col-md-3 control-label">Profile picture<br />Limit: 128kb</label>
                     <div class="col-md-9">
-                        <input type="file" class="form-control" ng-model="user.profileImageData" base-sixty-four-input id="inputProfileImageData" placeholder="img">
-                        <img class="img-thumbnail img-responsive" base-sixty-four-image="user.profileImageData" alt="{{user.name}}" ng-if="user.profileImageData"/>
+                        <input type="file" class="form-control" ng-model="editUser.profileImageData" base-sixty-four-input id="inputProfileImageData" placeholder="img" ng-change="formatProfileImgToBase64()">
+                        <img src="" ng-src="{{editUser.profileImageData}}" class="img-thumbnail img-responsive" base-sixty-four-image="editUser.profileImageData" alt="{{editUser.name}}" ng-if="editUser.profileImageData"/>
+                        <p>{{editUser.profileImageData}}</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputCoverImageData" class="col-md-3 control-label">Cover picture<br />Limit: 1024kb</label>
                     <div class="col-md-9">
-                        <input type="file" class="form-control" ng-model="user.coverImageData" base-sixty-four-input id="inputCoverImageData" placeholder="img">
-                        <img class="img-thumbnail img-responsive" base-sixty-four-image="user.coverImageData" alt="{{user.name}}" ng-if="user.coverImageData"/>
+                        <input type="file" class="form-control" ng-model="editUser.coverImageData" base-sixty-four-input id="inputCoverImageData" placeholder="img" ng-change="formatCoverImgToBase64()">
+                        <img src="" ng-src="{{editUser.coverImageData}}" class="img-thumbnail img-responsive" base-sixty-four-image="user.coverImageData" alt="{{editUser.name}}" ng-if="editUser.coverImageData"/>
+                        <p>{{editUser.coverImageData}}</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -46,13 +48,13 @@
                     <div class="col-md-9">
                         <div class="radio">
                             <label>
-                                <input type="radio" ng-model="user.gender" name="gender" value="1">Male
+                                <input type="radio" ng-model="editUser.gender" name="gender" value="1">Male
                             </label>
                             <label>
-                                <input type="radio" ng-model="user.gender" name="gender" value="2">Female
+                                <input type="radio" ng-model="editUser.gender" name="gender" value="2">Female
                             </label>
                             <label>
-                                <input type="radio" ng-model="user.gender" name="gender" value="0">Other
+                                <input type="radio" ng-model="editUser.gender" name="gender" value="0">Other
                             </label>
                         </div>
                         <div class="radio">
@@ -62,7 +64,7 @@
                 <div class="form-group">
                     <div class="col-md-9 col-lg-offset-3">
                         <button type="reset" class="btn btn-default">Cancel</button>
-                        <button type="submit" class="btn btn-primary" ng-click="editProfile(user, editProfileForm)">Edit</button>
+                        <button type="submit" class="btn btn-primary" ng-click="editProfile(editUser, editProfileForm)">Edit</button>
                     </div>
                 </div>
             </fieldset>
