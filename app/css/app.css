@@ -143,3 +143,28 @@ div.wall-header {
 .wall-header>div>div>button {
     font-size: 20px;
 }
+
+.news-feed {
+    font-size: 18px;
+}
+
+.news-feed>div>div {
+    font-size: 16px;
+}
+
+.news-feed>.panel-footer {
+    font-size: 16px;
+}
+
+.news-feed>.panel-footer>p {
+    text-align: right;
+}
+
+.news-feed img {
+    float: left;
+    margin-right: 10px;
+}
+
+.news-feed-comment a {
+    color: #191970;
+}

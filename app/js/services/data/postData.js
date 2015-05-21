@@ -1,20 +1,20 @@
 'use strict';
 
 socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', function ($resource, baseUrl, credentials) {
-    //function getPosts() {
-    //    var authorization = credentials.getAuthorization();
-    //    return $resource(
-    //        baseUrl + 'me/friends',
-    //        null,
-    //        {
-    //            'get': {
-    //                method: 'GET',
-    //                isArray: true,
-    //                headers: {'Authorization': authorization}
-    //            }
-    //        })
-    //        .get();
-    //}
+    function getNewsFeed(startPostId, pageSize) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'me/feed?StartPostId' + (startPostId || '') + '&PageSize=' + pageSize,
+            null,
+            {
+                'get': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
 
     function addPost(post) {
         var authorization = credentials.getAuthorization();
@@ -45,6 +45,7 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
     }
 
     return {
+        getNewsFeed: getNewsFeed,
         addPost: addPost,
         editPost: editPost
     }

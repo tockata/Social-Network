@@ -32,7 +32,6 @@
                     <div class="col-md-9">
                         <input type="file" class="form-control" ng-model="editUser.profileImageData" base-sixty-four-input id="inputProfileImageData" placeholder="img" ng-change="formatProfileImgToBase64()">
                         <img src="" ng-src="{{editUser.profileImageData}}" class="img-thumbnail img-responsive" base-sixty-four-image="editUser.profileImageData" alt="{{editUser.name}}" ng-if="editUser.profileImageData"/>
-                        <p>{{editUser.profileImageData}}</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -40,7 +39,6 @@
                     <div class="col-md-9">
                         <input type="file" class="form-control" ng-model="editUser.coverImageData" base-sixty-four-input id="inputCoverImageData" placeholder="img" ng-change="formatCoverImgToBase64()">
                         <img src="" ng-src="{{editUser.coverImageData}}" class="img-thumbnail img-responsive" base-sixty-four-image="user.coverImageData" alt="{{editUser.name}}" ng-if="editUser.coverImageData"/>
-                        <p>{{editUser.coverImageData}}</p>
                     </div>
                 </div>
                 <div class="form-group">
