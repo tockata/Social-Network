@@ -13,8 +13,8 @@
                 <td ng-repeat="friend in rows">
                     <a href="#/users/{{friend.username}}">
                         <div id="friend-container">
-                            <img class="friends-img img-thumbnail" src="" ng-src="{{friend.profileImageData}}" ng-if="friend.profileImageData">
-                            <img class=" friends-img img-thumbnail" src="" ng-src="{{defaultProfileImageData}}" ng-if="!friend.profileImageData">
+                            <img class="friend-img img-thumbnail" src="" ng-src="{{friend.profileImageData}}" ng-if="friend.profileImageData">
+                            <img class=" friend-img img-thumbnail" src="" ng-src="{{defaultProfileImageData}}" ng-if="!friend.profileImageData">
                             <h4 id="friend-name">{{friend.name}}</h4>
                         </div>
                     </a>

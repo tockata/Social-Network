@@ -68,10 +68,19 @@ body>div>div.row {
 #search-results {
     position: absolute;
     top: 50px;
-    right: 5px;
+    right: 25px;
 }
 
-.friends-img {
+#search-results li {
+    padding: 0;
+}
+
+#search-results li p {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.friend-img {
     max-width: 100px;
 }
 

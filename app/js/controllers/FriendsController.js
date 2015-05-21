@@ -1,18 +1,29 @@
 'use strict';
 
 socialNetworkApp.controller('FriendsController',
-    ['$scope', 'credentials', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, credentials, friendsData, toaster, defaultProfileImageData) {
+    ['$scope', '$routeParams', 'credentials', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $routeParams, credentials, friendsData, toaster, defaultProfileImageData) {
         $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
 
-        friendsData.getFriends()
-            .$promise
-            .then(function (data) {
-                $scope.totalCount = data.length;
-                $scope.friends = splitData(data, 2);
-            }, function (error) {
-                toaster.pop('error', 'Error!', error.data.message);
-            });
+        if($routeParams.username === $scope.user.username) {
+            friendsData.getLoggedUserFriends()
+                .$promise
+                .then(function (data) {
+                    $scope.totalCount = data.length;
+                    $scope.friends = splitData(data, 2);
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        } else {
+            friendsData.getOtherUserFriends($routeParams.username)
+                .$promise
+                .then(function (data) {
+                    $scope.totalCount = data.length;
+                    $scope.friends = splitData(data.friends, 2);
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
 
         function splitData(array, size) {
             var result = [];

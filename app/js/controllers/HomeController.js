@@ -2,5 +2,5 @@
 
 socialNetworkApp.controller('HomeController',
     ['$scope', 'credentials', function ($scope, credentials) {
-            $scope.isLogged = credentials.checkForSessionToken();
-    }]);
+        $scope.isLogged = credentials.checkForSessionToken();
+}]);

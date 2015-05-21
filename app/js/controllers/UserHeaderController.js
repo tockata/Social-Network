@@ -1,14 +1,12 @@
 'use strict';
 
 socialNetworkApp.controller('UserHeaderController',
-    ['$scope', '$location', '$route', '$timeout', 'credentials', 'userData', 'friendsData', 'defaultProfileImageData', function ($scope, $location, $route, $timeout, credentials, userData, friendsData, defaultProfileImageData){
+    ['$scope', '$location', '$route', '$timeout', 'credentials', 'userData', 'friendsData', 'defaultProfileImageData', 'toaster', function ($scope, $location, $route, $timeout, credentials, userData, friendsData, defaultProfileImageData, toaster){
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
 
-        if(!credentials.checkForSessionToken()) {
-            redirectToHome(0);
-        }
+        $scope.user = credentials.getLoggedUser();
 
         $scope.showRequestsDetail = showRequestsDetail;
         $scope.requestDetailsShown = false;
@@ -16,26 +14,15 @@ socialNetworkApp.controller('UserHeaderController',
         $scope.searchResultsShown = false;
         $scope.defaultProfileImageData = defaultProfileImageData;
 
-        if(!credentials.getLoggedUser()) {
-            userData.getLoggedUserData()
-                .$promise
-                .then(function (data) {
-                    $scope.user = data;
-                    credentials.saveLoggedUser(data);
-                }, function (error) {
-                    $scope.user = {};
-                    credentials.deleteCredentials();
-                    $route.reload();
-                });
-        } else {
-            $scope.user = credentials.getLoggedUser();
-        }
-
         friendsData.getFriendRequests()
             .$promise
             .then(function (data) {
                 $scope.requestsCount = data.length;
                 $scope.requests = data;
+            }, function (error) {
+                toaster.pop('error', 'Error!', error.data.message);
+                credentials.deleteCredentials();
+                $route.reload();
             });
 
         function showRequestsDetail() {
@@ -50,6 +37,7 @@ socialNetworkApp.controller('UserHeaderController',
                 .then(function (data) {
                     if(data.length) {
                         $scope.searchResults = data;
+                        $scope.searchResultsCount = data.length;
                         $scope.searchResultsShown = true;
                     } else {
                         $scope.searchResults = [];

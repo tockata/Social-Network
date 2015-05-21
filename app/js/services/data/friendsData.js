@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', function ($resource, baseUrl, credentials) {
-    function getFriends() {
+    function getLoggedUserFriends() {
         var authorization = credentials.getAuthorization();
         return $resource(
             baseUrl + 'me/friends',
@@ -10,6 +10,20 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
                 'get': {
                     method: 'GET',
                     isArray: true,
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
+
+    function getOtherUserFriends(username) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'users/' + username + '/friends/preview',
+            null,
+            {
+                'get': {
+                    method: 'GET',
                     headers: {'Authorization': authorization}
                 }
             })
@@ -88,7 +102,8 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
     }
 
     return {
-        getFriends: getFriends,
+        getLoggedUserFriends: getLoggedUserFriends,
+        getOtherUserFriends: getOtherUserFriends,
         getFriendsPreview: getFriendsPreview,
         getFriendRequests: getFriendRequests,
         sendFriendRequest: sendFriendRequest,
