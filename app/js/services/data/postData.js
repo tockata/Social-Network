@@ -44,10 +44,26 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
             .update(postContent);
     }
 
+    function getPostComments(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/comments',
+            null,
+            {
+                'get': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
+
     return {
         getNewsFeed: getNewsFeed,
         addPost: addPost,
-        editPost: editPost
+        editPost: editPost,
+        getPostComments: getPostComments
     }
 }]);
 

@@ -19,11 +19,12 @@ socialNetworkApp.factory('friendsData', ['$resource', 'baseUrl', 'credentials', 
     function getOtherUserFriends(username) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'users/' + username + '/friends/preview',
+            baseUrl + 'users/' + username + '/friends',
             null,
             {
                 'get': {
                     method: 'GET',
+                    isArray: true,
                     headers: {'Authorization': authorization}
                 }
             })

@@ -31,8 +31,8 @@ socialNetworkApp.controller('FriendsController',
             friendsData.getOtherUserFriends($routeParams.username)
                 .$promise
                 .then(function (data) {
-                    $scope.totalCount = data.totalCount;
-                    $scope.friends = splitData(data.friends, 2);
+                    $scope.totalCount = data.length;
+                    $scope.friends = splitData(data, 2);
                 });
         }
 
