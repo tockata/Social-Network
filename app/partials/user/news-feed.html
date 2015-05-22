@@ -19,7 +19,7 @@
                                     {{post.author.name}}
                                 </a>
                                 <br/>
-                                <span>{{post.date | date:'dd-MM-yyyy HH:MM:ss'}}</span>
+                                <span>{{post.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -27,12 +27,13 @@
                             {{post.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>{{post.likesCount}}
+                            <p>Likes:
+                                <span class="badge">{{post.likesCount}}</span>
                                 <a href="">
                                     <span ng-if="post.liked" ng-click="unlikePost(post.id)">Unlike</span>
                                     <span ng-if="!post.liked" ng-click="likePost(post.id)">Like</span>
-                                </a>
-                                <span>{{post.totalCommentsCount}}</span>
+                                </a>Comments:
+                                <span class="badge">{{post.totalCommentsCount}}</span>
                                 <a href="" ng-click="toggleNewCommentForm(post.id)">
                                     <span ng-if="newCommentFormPostId == post.id">{{commentButtonName}}</span>
                                     <span ng-if="newCommentFormPostId !== post.id">Comment</span>
@@ -63,7 +64,7 @@
                                     {{comment.author.name}}
                                 </a>
                                 <br/>
-                                <span>{{comment.date | date:'dd-MM-yyyy HH:MM:ss'}}</span>
+                                <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -71,10 +72,11 @@
                             {{comment.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>{{comment.likesCount}}
+                            <p>Likes:
+                                <span class="badge">{{comment.likesCount}}</span>
                                 <a href="">
-                                    <span ng-if="comment.liked" ng-click="unlikePost(comment.id)">Unlike</span>
-                                    <span ng-if="!comment.liked" ng-click="likePost(comment.id)">Like</span>
+                                    <span ng-if="comment.liked" ng-click="unlikeComment(comment.id)">Unlike</span>
+                                    <span ng-if="!comment.liked" ng-click="likeComment(comment.id)">Like</span>
                                 </a>
                             </p>
                         </div>
@@ -90,7 +92,7 @@
                                     {{comment.author.name}}
                                 </a>
                                 <br/>
-                                <span>{{comment.date | date:'dd-MM-yyyy HH:MM:ss'}}</span>
+                                <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -98,7 +100,8 @@
                             {{comment.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>{{comment.likesCount}}
+                            <p>Likes:
+                                <span class="badge">{{comment.likesCount}}</span>
                                 <a href="">
                                     <span ng-if="comment.liked" ng-click="unlikePost(comment.id)">Unlike</span>
                                     <span ng-if="!comment.liked" ng-click="likePost(comment.id)">Like</span>

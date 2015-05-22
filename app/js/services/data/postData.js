@@ -59,10 +59,40 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
             .get();
     }
 
+    function likePost(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/likes',
+            null,
+            {
+                'save': {
+                    method: 'POST',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .save();
+    }
+
+    function unlikePost(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/likes',
+            null,
+            {
+                'delete': {
+                    method: 'DELETE',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .delete();
+    }
+
     return {
         getNewsFeed: getNewsFeed,
         addPost: addPost,
         editPost: editPost,
-        getPostComments: getPostComments
+        getPostComments: getPostComments,
+        likePost: likePost,
+        unlikePost: unlikePost
     }
 }]);
