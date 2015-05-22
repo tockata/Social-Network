@@ -16,7 +16,13 @@ socialNetworkApp.controller('WallController',
         $scope.postComment = postComment;
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
+        $scope.wallOwnerUsername = $routeParams.username;
         $scope.deletePost = deletePost;
+        $scope.showEditPostForm = false;
+        $scope.editPostFormPostId = null;
+        $scope.showEditForm = showEditForm;
+        $scope.closeEditPostForm = closeEditPostForm;
+        $scope.editPost = editPost;
 
         getFriendWall();
 
@@ -180,8 +186,31 @@ socialNetworkApp.controller('WallController',
             })
         }
 
-        function editPost(postId) {
+        function showEditForm(postId) {
+            $scope.showEditPostForm = true;
+            $scope.editPostFormPostId = postId;
+        }
 
+        function closeEditPostForm(){
+            $scope.showEditPostForm = false;
+            $scope.editPostFormPostId = null;
+        }
+
+        function editPost(postId, postContent) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId && $scope.user.username == post.author.username) {
+                    postData.editPost(postId, postContent)
+                        .$promise
+                        .then(function (data) {
+                            $scope.showEditPostForm = false;
+                            $scope.editPostFormPostId = null;
+                            post.postContent = data.content;
+                            toaster.pop('error', 'Success!', data.message);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            });
         }
     }]);
 

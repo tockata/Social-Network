@@ -16,6 +16,11 @@ socialNetworkApp.controller('NewsFeedController',
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
         $scope.deletePost = deletePost;
+        $scope.showEditPostForm = false;
+        $scope.editPostFormPostId = null;
+        $scope.showEditForm = showEditForm;
+        $scope.closeEditPostForm = closeEditPostForm;
+        $scope.editPost = editPost;
 
         if($scope.isLogged) {
             getNewsFeed();
@@ -117,5 +122,32 @@ socialNetworkApp.controller('NewsFeedController',
                         });
                 }
             })
+        }
+
+        function showEditForm(postId) {
+            $scope.showEditPostForm = true;
+            $scope.editPostFormPostId = postId;
+        }
+
+        function closeEditPostForm(){
+            $scope.showEditPostForm = false;
+            $scope.editPostFormPostId = null;
+        }
+
+        function editPost(postId, postContent) {
+            $scope.newsFeed.forEach(function (post) {
+                if(post.id == postId && $scope.user.username == post.author.username) {
+                    postData.editPost(postId, postContent)
+                        .$promise
+                        .then(function (data) {
+                            $scope.showEditPostForm = false;
+                            $scope.editPostFormPostId = null;
+                            post.postContent = data.content;
+                            toaster.pop('error', 'Success!', data.message);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            });
         }
     }]);
