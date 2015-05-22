@@ -32,10 +32,9 @@
                         </div>
                         <div class="panel-body">
                             <span>{{post.postContent}}</span>
-                            {{post.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>Likes:
+                            <div>Likes:
                                 <span class="badge">{{post.likesCount}}</span>
                                 <a href="">
                                     <span ng-if="post.liked" ng-click="unlikePost(post.id)">Unlike</span>
@@ -58,8 +57,10 @@
                                     </div>
                                 </div>
                             </div>
-                            </p>
+                            </div>
                         </div>
+                        <button class="btn btn-danger btn-sm delete-post-btn" ng-click="deletePost(post.id)">Delete post</button>
+                        <button class="btn btn-info btn-sm edit-post-btn" ng-if="user.username == post.author.username" ng-click="editPost(post.id)">Edit post</button>
                     </div>
 
                     <!--Comments-->
@@ -77,16 +78,15 @@
                         </div>
                         <div class="panel-body">
                             <span>{{comment.commentContent}}</span>
-                            {{comment.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>Likes:
+                            <div>Likes:
                                 <span class="badge">{{comment.likesCount}}</span>
                                 <a href="">
                                     <span ng-if="comment.liked" ng-click="unlikeComment(comment.id)">Unlike</span>
                                     <span ng-if="!comment.liked" ng-click="likeComment(comment.id)">Like</span>
                                 </a>
-                            </p>
+                            </div>
                         </div>
                     </div>
 
@@ -105,16 +105,15 @@
                         </div>
                         <div class="panel-body">
                             <span>{{comment.commentContent}}</span>
-                            {{comment.id}}
                         </div>
                         <div class="panel-footer">
-                            <p>Likes:
+                            <div>Likes:
                                 <span class="badge">{{comment.likesCount}}</span>
                                 <a href="">
                                     <span ng-if="comment.liked" ng-click="unlikePost(comment.id)">Unlike</span>
                                     <span ng-if="!comment.liked" ng-click="likePost(comment.id)">Like</span>
                                 </a>
-                            </p>
+                            </div>
                         </div>
                     </div>
                     <button class="btn btn-success btn-sm pull-right" ng-if="post.totalCommentsCount > 3" ng-click="showAllComments(post.id)">More comments</button>

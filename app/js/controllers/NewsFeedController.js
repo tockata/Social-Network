@@ -15,9 +15,20 @@ socialNetworkApp.controller('NewsFeedController',
         $scope.postComment = postComment;
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
+        $scope.deletePost = deletePost;
 
         if($scope.isLogged) {
             getNewsFeed();
+        }
+
+        function getNewsFeed() {
+            postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
+                .$promise
+                .then(function (data) {
+                    $scope.newsFeed = data;
+                }, function (error) {
+
+                });
         }
 
         function showAllComments(postId) {
@@ -93,13 +104,18 @@ socialNetworkApp.controller('NewsFeedController',
             });
         }
 
-        function getNewsFeed() {
-            postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
-                .$promise
-                .then(function (data) {
-                    $scope.newsFeed = data;
-                }, function (error) {
-
-                });
+        function deletePost(postId) {
+            $scope.newsFeed.forEach(function (post, index, object) {
+                if(post.id == postId && post.author.username == $scope.user.username) {
+                    postData.deletePost(postId)
+                        .$promise
+                        .then(function (data) {
+                            toaster.pop('error', 'Success!', data.message);
+                            object.splice(index, 1);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            })
         }
     }]);

@@ -156,7 +156,7 @@ div.wall-header {
     font-size: 16px;
 }
 
-.news-feed>.panel-footer>p {
+.news-feed>.panel-footer>div {
     text-align: right;
 }
 
@@ -171,4 +171,12 @@ div.wall-header {
 
 .submit-comment-btn {
     margin-top: 37px;
+}
+
+.delete-post-btn {
+    margin: 5px;
+}
+
+.edit-post-btn {
+    margin: 5px;
 }

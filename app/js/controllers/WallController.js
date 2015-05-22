@@ -1,15 +1,22 @@
 'use strict';
 
 socialNetworkApp.controller('WallController',
-    ['$scope', '$routeParams', 'userData', 'friendsData', 'postData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $routeParams, userData, friendsData, postData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
+    ['$scope', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
         var _defaultStartPostId = 0,
             _defaultPageSize = 5;
         $scope.user = credentials.getLoggedUser();
         $scope.submitPost = submitPost;
         $scope.sendFriendRequest = sendFriendRequest;
         $scope.defaultProfileImageData = defaultProfileImageData;
+        $scope.showAllComments = showAllComments;
+        $scope.commentButtonName = 'Comment';
+        $scope.showNewCommentForm = false;
+        $scope.newCommentFormPostId = null;
+        $scope.toggleNewCommentForm = toggleNewCommentForm;
+        $scope.postComment = postComment;
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
+        $scope.deletePost = deletePost;
 
         getFriendWall();
 
@@ -49,6 +56,16 @@ socialNetworkApp.controller('WallController',
                 toaster.pop('error', 'Error!', error.data.message);
             });
 
+        function getFriendWall() {
+            postData.getFriendWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
+                .$promise
+                .then(function (data) {
+                    $scope.friendWall = data;
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
+
         function submitPost(postContent) {
             var post = {
                 postContent: postContent,
@@ -59,6 +76,7 @@ socialNetworkApp.controller('WallController',
                 .$promise
                 .then(function (data) {
                     toaster.pop('success', 'Post successfully added!', data.message);
+                    $scope.friendWall.unshift(data);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 })
@@ -69,6 +87,45 @@ socialNetworkApp.controller('WallController',
                 .$promise
                 .then(function (data) {
                     toaster.pop('success', 'Success!', data.message);
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
+
+        function showAllComments(postId) {
+            $scope.postAllComments = {
+                postId: postId,
+                comments: []
+            };
+            postData.getPostComments(postId)
+                .$promise
+                .then(function (data) {
+                    $scope.postAllComments.comments = data;
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                })
+        }
+
+        function toggleNewCommentForm(postId) {
+            if($scope.showNewCommentForm) {
+                $scope.showNewCommentForm = false;
+                $scope.commentButtonName = 'Comment';
+                $scope.commentContent = '';
+            } else {
+                $scope.showNewCommentForm = true;
+                $scope.newCommentFormPostId = postId;
+                $scope.commentButtonName = 'Hide';
+            }
+        }
+
+        function postComment(commentContent, postId) {
+            commentData.addComment(commentContent, postId)
+                .$promise
+                .then(function (data) {
+                    toaster.pop('error', 'Success!', 'Comment successfully added.');
+                    $scope.showNewCommentForm = false;
+                    $scope.newCommentFormPostId = null;
+                    getFriendWall();
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });
@@ -108,14 +165,23 @@ socialNetworkApp.controller('WallController',
             });
         }
 
-        function getFriendWall() {
-            postData.getFriendWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
-                .$promise
-                .then(function (data) {
-                    $scope.friendWall = data;
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
-                });
+        function deletePost(postId) {
+            $scope.friendWall.forEach(function (post, index, object) {
+                if(post.id == postId) {
+                    postData.deletePost(postId)
+                        .$promise
+                        .then(function (data) {
+                            toaster.pop('error', 'Success!', data.message);
+                            object.splice(index, 1);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            })
+        }
+
+        function editPost(postId) {
+
         }
     }]);
 

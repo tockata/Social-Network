@@ -59,6 +59,20 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
             .update(postContent);
     }
 
+    function deletePost(postId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId,
+            null,
+            {
+                'delete': {
+                    method: 'DELETE',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .delete();
+    }
+
     function getPostComments(postId) {
         var authorization = credentials.getAuthorization();
         return $resource(
@@ -107,6 +121,7 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
         getFriendWall: getFriendWall,
         addPost: addPost,
         editPost: editPost,
+        deletePost: deletePost,
         getPostComments: getPostComments,
         likePost: likePost,
         unlikePost: unlikePost
