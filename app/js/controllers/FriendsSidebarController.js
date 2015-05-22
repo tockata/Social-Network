@@ -7,21 +7,21 @@ socialNetworkApp.controller('FriendsSidebarController',
 
         if(!$routeParams.username || $routeParams.username === $scope.user.username) {
             $scope.username = $scope.user.username;
-            friendsData.getFriendsPreview()
+            friendsData.getLoggedUserFriendsPreview()
                 .$promise
                 .then(function (data) {
                     $scope.totalCount = data.totalCount;
-                    $scope.friends = data.friends.slice(0, 6);
+                    $scope.friends = data.friends;
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });
         } else {
             $scope.username = $routeParams.username;
-            friendsData.getOtherUserFriends($routeParams.username)
+            friendsData.getOtherUserFriendsPreview($routeParams.username)
                 .$promise
                 .then(function (data) {
                     $scope.totalCount = data.totalCount;
-                    $scope.friends = data.friends.slice(0, 6);
+                    $scope.friends = data.friends;
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });

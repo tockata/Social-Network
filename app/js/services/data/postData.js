@@ -66,4 +66,3 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
         getPostComments: getPostComments
     }
 }]);
-

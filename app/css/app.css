@@ -168,3 +168,7 @@ div.wall-header {
 .news-feed-comment a {
     color: #191970;
 }
+
+.submit-comment-btn {
+    margin-top: 37px;
+}

@@ -15,7 +15,7 @@
                             <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
                             <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
                             <div>
-                                <a href="/users/{{post.author.username}}">
+                                <a href="#/users/{{post.author.username}}">
                                     {{post.author.name}}
                                 </a>
                                 <br/>
@@ -33,7 +33,22 @@
                                     <span ng-if="!post.liked" ng-click="likePost(post.id)">Like</span>
                                 </a>
                                 <span>{{post.totalCommentsCount}}</span>
-                                <a href="">Comment</a>
+                                <a href="" ng-click="toggleNewCommentForm(post.id)">
+                                    <span ng-if="newCommentFormPostId == post.id">{{commentButtonName}}</span>
+                                    <span ng-if="newCommentFormPostId !== post.id">Comment</span>
+                                </a>
+                                <br/>
+                                <div class="form-group" ng-if="showNewCommentForm == true && newCommentFormPostId == post.id">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <label class="control-label" for="inputLarge">New comment</label>
+                                            <input class="form-control input-lg" type="text" id="inputLarge" ng-model="newComment.commentContent">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <button class="btn btn-primary submit-comment-btn" ng-click="postComment(newComment, post.id)">Submit</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </p>
                         </div>
                     </div>
