@@ -46,7 +46,7 @@ var socialNetworkApp = angular
                 }
             })
             .when('/users/:username', {
-                templateUrl: 'partials/user/wall.html',
+                templateUrl: 'partials/user/user-wall.html',
                 controller: 'WallController',
                 resolve:{
                     isLogged: function($location, $sessionStorage, $localStorage){

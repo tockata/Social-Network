@@ -5,6 +5,7 @@ socialNetworkApp.controller('WallController',
         var _defaultStartPostId = 0,
             _defaultPageSize = 5;
         $scope.user = credentials.getLoggedUser();
+
         $scope.submitPost = submitPost;
         $scope.sendFriendRequest = sendFriendRequest;
         $scope.defaultProfileImageData = defaultProfileImageData;
@@ -24,43 +25,56 @@ socialNetworkApp.controller('WallController',
         $scope.closeEditPostForm = closeEditPostForm;
         $scope.editPost = editPost;
 
-        getFriendWall();
+        if(!$routeParams.username) {
+            getNewsFeed();
+        } else {
+            getFriendWall();
+            userData.getUserFullData($routeParams.username)
+                .$promise
+                .then(function (data) {
+                    $scope.userData = data;
+                    if($scope.user.username === $routeParams.username || $scope.userData.isFriend === true) {
+                        $scope.isFriendOrLoggedUser = true;
+                        $scope.wallOwner = $scope.userData.username;
+                    }
 
-        userData.getUserFullData($routeParams.username)
-            .$promise
-            .then(function (data) {
-                $scope.userData = data;
-                if($scope.user.username === $routeParams.username || $scope.userData.isFriend === true) {
-                    $scope.isFriendOrLoggedUser = true;
-                    $scope.wallOwner = $scope.userData.username;
-                }
+                    if(!$scope.userData.coverImageData) {
+                        $scope.userData.coverImageData = defaultCoverImageData;
+                    }
 
-                if(!$scope.userData.coverImageData) {
-                    $scope.userData.coverImageData = defaultCoverImageData;
-                }
-
-                if($scope.userData.isFriend) {
-                    $scope.buttonName = 'Friend';
-                    $scope.disabledButton = 'disabled';
-                } else if (
-                    !$scope.userData.isFriend
-                    && $scope.userData.hasPendingRequest
-                    && $scope.user.username !== $routeParams.username) {
+                    if($scope.userData.isFriend) {
+                        $scope.buttonName = 'Friend';
+                        $scope.disabledButton = 'disabled';
+                    } else if (
+                        !$scope.userData.isFriend
+                        && $scope.userData.hasPendingRequest
+                        && $scope.user.username !== $routeParams.username) {
                         $scope.buttonName = 'Pending request';
                         $scope.disabledButton = 'disabled';
-                } else if(
-                    !$scope.userData.isFriend
-                    && !$scope.userData.hasPendingReques
-                    && $scope.user.username !== $routeParams.username) {
+                    } else if(
+                        !$scope.userData.isFriend
+                        && !$scope.userData.hasPendingReques
+                        && $scope.user.username !== $routeParams.username) {
                         $scope.buttonName = 'Invite';
-                } else {
-                    $scope.buttonName = 'My wall';
-                    $scope.disabledButton = 'disabled';
-                }
+                    } else {
+                        $scope.buttonName = 'My wall';
+                        $scope.disabledButton = 'disabled';
+                    }
 
-            }, function (error) {
-                toaster.pop('error', 'Error!', error.data.message);
-            });
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
+
+        function getNewsFeed() {
+            postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
+                .$promise
+                .then(function (data) {
+                    $scope.friendWall = data;
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
 
         function getFriendWall() {
             postData.getFriendWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
@@ -81,8 +95,8 @@ socialNetworkApp.controller('WallController',
             postData.addPost(post)
                 .$promise
                 .then(function (data) {
-                    toaster.pop('success', 'Post successfully added!', data.message);
                     $scope.friendWall.unshift(data);
+                    toaster.pop('success', 'Post successfully added!', data.message);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 })
@@ -92,6 +106,9 @@ socialNetworkApp.controller('WallController',
             friendsData.sendFriendRequest(username)
                 .$promise
                 .then(function (data) {
+                    $scope.userData.hasPendingRequest = true;
+                    $scope.buttonName = 'Pending request';
+                    $scope.disabledButton = 'disabled';
                     toaster.pop('success', 'Success!', data.message);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
