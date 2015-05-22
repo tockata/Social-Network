@@ -5,6 +5,7 @@ socialNetworkApp.controller('NewsFeedController',
         var _defaultStartPostId = 0,
             _defaultPageSize = 5;
 
+        $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
         $scope.showAllComments = showAllComments;
         $scope.commentButtonName = 'Comment';
@@ -61,7 +62,7 @@ socialNetworkApp.controller('NewsFeedController',
         function unlikePost(postId) {
             $scope.newsFeed.forEach(function (post) {
                 if(post.id == postId) {
-                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
                         postData.unlikePost(postId)
                             .$promise
                             .then(function (data) {
@@ -78,7 +79,7 @@ socialNetworkApp.controller('NewsFeedController',
         function likePost(postId) {
             $scope.newsFeed.forEach(function (post) {
                 if(post.id == postId) {
-                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
                         postData.likePost(postId)
                             .$promise
                             .then(function (data) {

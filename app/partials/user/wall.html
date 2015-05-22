@@ -12,7 +12,117 @@
     <img src="" ng-src="{{userData.coverImageData}}" alt="{{userData.name}}">
 </div>
 <div class="row">
-    <div class="col-sm-6 col-md-7 col-lg-7"></div>
+    <div class="col-sm-6 col-md-6 col-lg-6 col-md-offset-1">
+        <div ng-repeat="post in friendWall">
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <!--Posts-->
+                    <div class="panel panel-primary news-feed">
+                        <div class="panel-heading">
+                            <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
+                            <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
+                            <div>
+                                <a href="#/users/{{post.author.username}}">
+                                    {{post.author.name}}
+                                </a>
+                                <br/>
+                                <span>{{post.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <span>{{post.postContent}}</span>
+                            {{post.id}}
+                        </div>
+                        <div class="panel-footer">
+                            <p>Likes:
+                                <span class="badge">{{post.likesCount}}</span>
+                                <a href="">
+                                    <span ng-if="post.liked" ng-click="unlikePost(post.id)">Unlike</span>
+                                    <span ng-if="!post.liked" ng-click="likePost(post.id)">Like</span>
+                                </a>Comments:
+                                <span class="badge">{{post.totalCommentsCount}}</span>
+                                <a href="" ng-click="toggleNewCommentForm(post.id)">
+                                    <span ng-if="newCommentFormPostId == post.id">{{commentButtonName}}</span>
+                                    <span ng-if="newCommentFormPostId !== post.id">Comment</span>
+                                </a>
+                                <br/>
+                            <div class="form-group" ng-if="showNewCommentForm == true && newCommentFormPostId == post.id">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="control-label" for="inputLarge">New comment</label>
+                                        <input class="form-control input-lg" type="text" id="inputLarge" ng-model="newComment.commentContent">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button class="btn btn-primary submit-comment-btn" ng-click="postComment(newComment, post.id)">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!--Comments-->
+                    <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in post.comments" ng-if="postAllComments.postId !== post.id">
+                        <div class="panel-heading">
+                            <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
+                            <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
+                            <div>
+                                <a href="/users/{{comment.author.username}}">
+                                    {{comment.author.name}}
+                                </a>
+                                <br/>
+                                <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <span>{{comment.commentContent}}</span>
+                            {{comment.id}}
+                        </div>
+                        <div class="panel-footer">
+                            <p>Likes:
+                                <span class="badge">{{comment.likesCount}}</span>
+                                <a href="">
+                                    <span ng-if="comment.liked" ng-click="unlikeComment(comment.id)">Unlike</span>
+                                    <span ng-if="!comment.liked" ng-click="likeComment(comment.id)">Like</span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!--More comments-->
+                    <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in postAllComments.comments" ng-if="postAllComments.postId == post.id">
+                        <div class="panel-heading">
+                            <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
+                            <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
+                            <div>
+                                <a href="/users/{{comment.author.username}}">
+                                    {{comment.author.name}}
+                                </a>
+                                <br/>
+                                <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <span>{{comment.commentContent}}</span>
+                            {{comment.id}}
+                        </div>
+                        <div class="panel-footer">
+                            <p>Likes:
+                                <span class="badge">{{comment.likesCount}}</span>
+                                <a href="">
+                                    <span ng-if="comment.liked" ng-click="unlikePost(comment.id)">Unlike</span>
+                                    <span ng-if="!comment.liked" ng-click="likePost(comment.id)">Like</span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <button class="btn btn-success btn-sm pull-right" ng-if="post.totalCommentsCount > 3" ng-click="showAllComments(post.id)">More comments</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
     <div class="col-sm-4 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1" ng-if="isFriendOrLoggedUser">
         <div class="row">

@@ -4,7 +4,22 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
     function getNewsFeed(startPostId, pageSize) {
         var authorization = credentials.getAuthorization();
         return $resource(
-            baseUrl + 'me/feed?StartPostId' + (startPostId || '') + '&PageSize=' + pageSize,
+            baseUrl + 'me/feed?StartPostId=' + (startPostId || '') + '&PageSize=' + pageSize,
+            null,
+            {
+                'get': {
+                    method: 'GET',
+                    isArray: true,
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .get();
+    }
+
+    function getFriendWall(username, startPostId, pageSize) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'users/'+ username + '/wall?StartPostId=' + (startPostId || '') + '&PageSize=' + pageSize,
             null,
             {
                 'get': {
@@ -89,6 +104,7 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
 
     return {
         getNewsFeed: getNewsFeed,
+        getFriendWall: getFriendWall,
         addPost: addPost,
         editPost: editPost,
         getPostComments: getPostComments,

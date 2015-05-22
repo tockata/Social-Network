@@ -2,10 +2,16 @@
 
 socialNetworkApp.controller('WallController',
     ['$scope', '$routeParams', 'userData', 'friendsData', 'postData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $routeParams, userData, friendsData, postData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
+        var _defaultStartPostId = 0,
+            _defaultPageSize = 5;
         $scope.user = credentials.getLoggedUser();
         $scope.submitPost = submitPost;
         $scope.sendFriendRequest = sendFriendRequest;
         $scope.defaultProfileImageData = defaultProfileImageData;
+        $scope.unlikePost = unlikePost;
+        $scope.likePost = likePost;
+
+        getFriendWall();
 
         userData.getUserFullData($routeParams.username)
             .$promise
@@ -63,6 +69,50 @@ socialNetworkApp.controller('WallController',
                 .$promise
                 .then(function (data) {
                     toaster.pop('success', 'Success!', data.message);
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+        }
+
+        function unlikePost(postId) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId) {
+                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
+                        postData.unlikePost(postId)
+                            .$promise
+                            .then(function (data) {
+                                post.liked = false;
+                                post.likesCount--;
+                            }, function (error) {
+                                toaster.pop('error', 'Error!', error.data.message);
+                            });
+                    }
+                }
+            });
+        }
+
+        function likePost(postId) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId) {
+                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
+                        postData.likePost(postId)
+                            .$promise
+                            .then(function (data) {
+                                post.liked = true;
+                                post.likesCount++;
+                            }, function (error) {
+                                toaster.pop('error', 'Error!', error.data.message);
+                            });
+                    }
+                }
+            });
+        }
+
+        function getFriendWall() {
+            postData.getFriendWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
+                .$promise
+                .then(function (data) {
+                    $scope.friendWall = data;
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });
