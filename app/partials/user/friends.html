@@ -8,9 +8,14 @@
 
 <div class="row">
     <div class="col-md-6 col-md-offset-3">
+        <div class="form-group">
+            <label class="control-label" for="focusedInput">Name filter: </label>
+            <input class="form-control" id="focusedInput" ng-model="nameFilter.name" type="text" value="Search...">
+        </div>
+
         <table class="table table-bordered table-responsive">
             <tr ng-repeat="rows in friends">
-                <td ng-repeat="friend in rows">
+                <td ng-repeat="friend in rows | filter: nameFilter">
                     <a href="#/users/{{friend.username}}">
                         <div id="friend-container">
                             <img class="friend-img img-thumbnail" src="" ng-src="{{friend.profileImageData}}" ng-if="friend.profileImageData">
