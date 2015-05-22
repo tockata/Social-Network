@@ -8,9 +8,11 @@
             </div>
             <div class="request" ng-repeat="request in requests">
                 <div class="modal-body">
-                    <img class="img-thumbnail" src="" ng-src="{{request.user.profileImageData}}" alt="{{request.user.name}}" ng-if="request.user.profileImageData">
-                    <img class="img-thumbnail" src="" ng-src="{{defaultProfileImageData}}" alt="{{request.user.name}}" ng-if="!request.user.profileImageData">
-                    <span>{{request.user.name}}</span>
+                    <a href="#/users/{{request.user.username}}">
+                        <img class="img-thumbnail" src="" ng-src="{{request.user.profileImageData}}" alt="{{request.user.name}}" ng-if="request.user.profileImageData">
+                        <img class="img-thumbnail" src="" ng-src="{{defaultProfileImageData}}" alt="{{request.user.name}}" ng-if="!request.user.profileImageData">
+                        <span>{{request.user.name}}</span>
+                    </a>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="acceptRequest(request.id)">Accept</button>

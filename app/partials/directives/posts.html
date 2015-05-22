@@ -22,11 +22,11 @@
                     <div>Likes:
                         <span class="badge">{{post.likesCount}}</span>
                         <a href="">
-                            <span ng-if="post.liked" ng-click="unlikePost(post.id)">Unlike</span>
-                            <span ng-if="!post.liked" ng-click="likePost(post.id)">Like</span>
+                            <span ng-if="post.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="unlikePost(post.id)">Unlike</span>
+                            <span ng-if="!post.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="likePost(post.id)">Like</span>
                         </a>Comments:
                         <span class="badge">{{post.totalCommentsCount}}</span>
-                        <a href="" ng-click="toggleNewCommentForm(post.id)">
+                        <a href="" ng-click="toggleNewCommentForm(post.id)" ng-if="post.author.isFriend || post.wallOwner.isFriend">
                             <span ng-if="newCommentFormPostId == post.id">{{commentButtonName}}</span>
                             <span ng-if="newCommentFormPostId !== post.id">Comment</span>
                         </a>
@@ -44,10 +44,10 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn btn-danger btn-sm delete-post-btn" ng-if="user.username == wallOwnerUsername || user.username == post.author.username" ng-click="deletePost(post.id)">Delete post</button>
-                <button class="btn btn-info btn-sm edit-post-btn" ng-if="user.username == post.author.username" ng-click="showEditForm(post.id)">Edit post</button>
+                <button class="btn btn-danger btn-sm delete-post-btn" ng-if="user.username == post.wallOwner.username || user.username == post.author.username" ng-click="deletePost(post.id)">Delete post</button>
+                <button class="btn btn-info btn-sm edit-post-btn" ng-if="user.username == post.author.username" ng-click="showEditPostForm(post.id)">Edit post</button>
 
-                <div class="modal" ng-if="showEditPostForm && post.id == editPostFormPostId">
+                <div class="modal" ng-if="editPostFormShown && post.id == editPostFormPostId">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -90,15 +90,15 @@
                     <div>Likes:
                         <span class="badge">{{comment.likesCount}}</span>
                         <a href="">
-                            <span ng-if="comment.liked" ng-click="unlikeComment(comment.id)">Unlike</span>
-                            <span ng-if="!comment.liked" ng-click="likeComment(comment.id)">Like</span>
+                            <span ng-if="comment.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="unlikeComment(post.id, comment.id)">Unlike</span>
+                            <span ng-if="!comment.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="likeComment(post.id, comment.id)">Like</span>
                         </a>
                     </div>
                 </div>
             </div>
 
             <!--More comments-->
-            <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in postAllComments.comments" ng-if="postAllComments.postId == post.id">
+            <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in post.comments" ng-if="postAllComments.postId == post.id">
                 <div class="panel-heading">
                     <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
                     <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
@@ -117,8 +117,8 @@
                     <div>Likes:
                         <span class="badge">{{comment.likesCount}}</span>
                         <a href="">
-                            <span ng-if="comment.liked" ng-click="unlikePost(comment.id)">Unlike</span>
-                            <span ng-if="!comment.liked" ng-click="likePost(comment.id)">Like</span>
+                            <span ng-if="comment.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="unlikeComment(post.id, comment.id)">Unlike</span>
+                            <span ng-if="!comment.liked && (post.author.isFriend || post.wallOwner.isFriend)" ng-click="likeComment(post.id, comment.id)">Like</span>
                         </a>
                     </div>
                 </div>

@@ -1,29 +1,34 @@
 'use strict';
 
 socialNetworkApp.controller('WallController',
-    ['$scope', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
+    ['$scope', '$route', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $route, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
         var _defaultStartPostId = 0,
             _defaultPageSize = 5;
         $scope.user = credentials.getLoggedUser();
+        $scope.defaultProfileImageData = defaultProfileImageData;
+        $scope.sendFriendRequest = sendFriendRequest;
+        $scope.wallOwnerUsername = $routeParams.username;
 
         $scope.submitPost = submitPost;
-        $scope.sendFriendRequest = sendFriendRequest;
-        $scope.defaultProfileImageData = defaultProfileImageData;
+        $scope.deletePost = deletePost;
+        $scope.unlikePost = unlikePost;
+        $scope.likePost = likePost;
+        $scope.editPostFormShown = false;
+        $scope.editPostFormPostId = null;
+        $scope.showEditPostForm = showEditPostForm;
+        $scope.closeEditPostForm = closeEditPostForm;
+        $scope.editPost = editPost;
+
         $scope.showAllComments = showAllComments;
         $scope.commentButtonName = 'Comment';
         $scope.showNewCommentForm = false;
         $scope.newCommentFormPostId = null;
         $scope.toggleNewCommentForm = toggleNewCommentForm;
         $scope.postComment = postComment;
-        $scope.unlikePost = unlikePost;
-        $scope.likePost = likePost;
-        $scope.wallOwnerUsername = $routeParams.username;
-        $scope.deletePost = deletePost;
-        $scope.showEditPostForm = false;
-        $scope.editPostFormPostId = null;
-        $scope.showEditForm = showEditForm;
-        $scope.closeEditPostForm = closeEditPostForm;
-        $scope.editPost = editPost;
+        $scope.unlikeComment = unlikeComment;
+        $scope.likeComment = likeComment;
+
+
 
         if(!$routeParams.username) {
             getNewsFeed();
@@ -96,6 +101,7 @@ socialNetworkApp.controller('WallController',
                 .$promise
                 .then(function (data) {
                     $scope.friendWall.unshift(data);
+                    $route.reload();
                     toaster.pop('success', 'Post successfully added!', data.message);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
@@ -115,15 +121,99 @@ socialNetworkApp.controller('WallController',
                 });
         }
 
+        function deletePost(postId) {
+            $scope.friendWall.forEach(function (post, index, object) {
+                if(post.id == postId) {
+                    postData.deletePost(postId)
+                        .$promise
+                        .then(function (data) {
+                            toaster.pop('error', 'Success!', data.message);
+                            object.splice(index, 1);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            })
+        }
+
+        function showEditPostForm(postId) {
+            $scope.editPostFormShown = true;
+            $scope.editPostFormPostId = postId;
+        }
+
+        function closeEditPostForm(){
+            $scope.editPostFormShown = false;
+            $scope.editPostFormPostId = null;
+        }
+
+        function editPost(postId, postContent) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId && $scope.user.username == post.author.username) {
+                    postData.editPost(postId, postContent)
+                        .$promise
+                        .then(function (data) {
+                            $scope.editPostFormShown = false;
+                            $scope.editPostFormPostId = null;
+                            post.postContent = data.content;
+                            toaster.pop('error', 'Success!', data.message);
+                        }, function (error) {
+                            toaster.pop('error', 'Error!', error.data.message);
+                        });
+                }
+            });
+        }
+
+        function unlikePost(postId) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId) {
+                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                        postData.unlikePost(postId)
+                            .$promise
+                            .then(function (data) {
+                                post.liked = false;
+                                post.likesCount--;
+                            }, function (error) {
+                                toaster.pop('error', 'Error!', error.data.message);
+                            });
+                    } else {
+                        toaster.pop('error', 'Error!', 'You can`t unlike this post!');
+                    }
+                }
+            });
+        }
+
+        function likePost(postId) {
+            $scope.friendWall.forEach(function (post) {
+                if(post.id == postId) {
+                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                        postData.likePost(postId)
+                            .$promise
+                            .then(function (data) {
+                                post.liked = true;
+                                post.likesCount++;
+                            }, function (error) {
+                                toaster.pop('error', 'Error!', error.data.message);
+                            });
+                    } else {
+                        toaster.pop('error', 'Error!', 'You can`t like this post!');
+                    }
+                }
+            });
+        }
+
         function showAllComments(postId) {
             $scope.postAllComments = {
-                postId: postId,
-                comments: []
+                postId: postId
             };
             postData.getPostComments(postId)
                 .$promise
                 .then(function (data) {
-                    $scope.postAllComments.comments = data;
+                    $scope.friendWall.forEach(function (post) {
+                        if(post.id == postId) {
+                            post.comments = data;
+                        }
+                    });
+                    //$scope.postAllComments.comments = data;
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 })
@@ -142,90 +232,72 @@ socialNetworkApp.controller('WallController',
         }
 
         function postComment(commentContent, postId) {
-            commentData.addComment(commentContent, postId)
-                .$promise
-                .then(function (data) {
-                    toaster.pop('error', 'Success!', 'Comment successfully added.');
-                    $scope.showNewCommentForm = false;
-                    $scope.newCommentFormPostId = null;
-                    getFriendWall();
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
-                });
-        }
-
-        function unlikePost(postId) {
             $scope.friendWall.forEach(function (post) {
                 if(post.id == postId) {
-                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
-                        postData.unlikePost(postId)
+                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                        commentData.addComment(commentContent, postId)
                             .$promise
                             .then(function (data) {
-                                post.liked = false;
-                                post.likesCount--;
+                                $scope.showNewCommentForm = false;
+                                $scope.newCommentFormPostId = null;
+                                post.comments.unshift(data);
+                                post.totalCommentsCount++;
+                                toaster.pop('error', 'Success!', 'Comment successfully added.');
                             }, function (error) {
                                 toaster.pop('error', 'Error!', error.data.message);
                             });
+                    } else {
+                        toaster.pop(
+                            'error',
+                            'Error!',
+                            'You can`t comment on posts when neither the author, nor wall owner is a friend.');
                     }
                 }
             });
         }
 
-        function likePost(postId) {
+        function unlikeComment(postId, commentId) {
             $scope.friendWall.forEach(function (post) {
                 if(post.id == postId) {
-                    if((post.author.isFriend || post.wallOwner.isFriend) && post.author.username !== $scope.user.username) {
-                        postData.likePost(postId)
-                            .$promise
-                            .then(function (data) {
-                                post.liked = true;
-                                post.likesCount++;
-                            }, function (error) {
-                                toaster.pop('error', 'Error!', error.data.message);
-                            });
-                    }
+                    post.comments.forEach(function (comment) {
+                        if(comment.id == commentId) {
+                            if(post.author.isFriend || post.wallOwner.isFriend) {
+                                commentData.unlikeComment(postId, commentId)
+                                    .$promise
+                                    .then(function (data) {
+                                        comment.liked = false;
+                                        comment.likesCount--;
+                                    }, function (error) {
+                                        toaster.pop('error', 'Error!', error.data.message);
+                                    });
+                            } else {
+                                toaster.pop('error', 'Error!', 'You can`t unlike this comment!');
+                            }
+                        }
+                    });
                 }
             });
         }
 
-        function deletePost(postId) {
-            $scope.friendWall.forEach(function (post, index, object) {
-                if(post.id == postId) {
-                    postData.deletePost(postId)
-                        .$promise
-                        .then(function (data) {
-                            toaster.pop('error', 'Success!', data.message);
-                            object.splice(index, 1);
-                        }, function (error) {
-                            toaster.pop('error', 'Error!', error.data.message);
-                        });
-                }
-            })
-        }
-
-        function showEditForm(postId) {
-            $scope.showEditPostForm = true;
-            $scope.editPostFormPostId = postId;
-        }
-
-        function closeEditPostForm(){
-            $scope.showEditPostForm = false;
-            $scope.editPostFormPostId = null;
-        }
-
-        function editPost(postId, postContent) {
+        function likeComment(postId, commentId) {
             $scope.friendWall.forEach(function (post) {
-                if(post.id == postId && $scope.user.username == post.author.username) {
-                    postData.editPost(postId, postContent)
-                        .$promise
-                        .then(function (data) {
-                            $scope.showEditPostForm = false;
-                            $scope.editPostFormPostId = null;
-                            post.postContent = data.content;
-                            toaster.pop('error', 'Success!', data.message);
-                        }, function (error) {
-                            toaster.pop('error', 'Error!', error.data.message);
-                        });
+                if(post.id == postId) {
+                    post.comments.forEach(function (comment) {
+                        if(comment.id == commentId) {
+                            if(post.author.isFriend || post.wallOwner.isFriend) {
+                                commentData.likeComment(postId, commentId)
+                                    .$promise
+                                    .then(function (data) {
+                                        comment.liked = true;
+                                        comment.likesCount++;
+                                    }, function (error) {
+                                        toaster.pop('error', 'Error!', error.data.message);
+                                    });
+                            } else {
+                                toaster.pop('error', 'Error!', 'You can`t like this comment!');
+                            }
+                        }
+                    });
                 }
             });
         }

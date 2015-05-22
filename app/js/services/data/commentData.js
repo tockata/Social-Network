@@ -43,9 +43,39 @@ socialNetworkApp.factory('commentData', ['$resource', 'baseUrl', 'credentials', 
             .delete();
     }
 
+    function likeComment(postId, commentId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/comments/' + commentId + '/likes',
+            null,
+            {
+                'save': {
+                    method: 'POST',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .save();
+    }
+
+    function unlikeComment(postId, commentId) {
+        var authorization = credentials.getAuthorization();
+        return $resource(
+            baseUrl + 'posts/' + postId + '/comments/' + commentId + '/likes',
+            null,
+            {
+                'delete': {
+                    method: 'DELETE',
+                    headers: {'Authorization': authorization}
+                }
+            })
+            .delete();
+    }
+
     return {
         addComment: addComment,
         editComment: editComment,
-        deleteComment: deleteComment
+        deleteComment: deleteComment,
+        likeComment: likeComment,
+        unlikeComment: unlikeComment
     }
 }]);
