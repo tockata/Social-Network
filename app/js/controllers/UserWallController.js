@@ -35,6 +35,9 @@ socialNetworkApp.controller('UserWallController',
         $scope.closeEditCommentForm = closeEditCommentForm;
         $scope.editComment = editComment;
 
+        $scope.userPreviewShown = false;
+        $scope.showUserPreview = showUserPreview;
+
         getPosts();
         if($routeParams.username) {
             userData.getUserFullData($routeParams.username)
@@ -356,6 +359,27 @@ socialNetworkApp.controller('UserWallController',
                     })
                 }
             });
+        }
+
+        function showUserPreview(username) {
+            userData.getUserPreviewData(username)
+                .$promise
+                .then(function (data) {
+                    if(data.isFriend) {
+                        $scope.userFriendStatus = 'Friend';
+                        $scope.userHoverButtonType = 'disabled';
+                    } else if(!data.isFriend && data.hasPendingRequest) {
+                        $scope.userFriendStatus = 'Pending';
+                        $scope.userHoverButtonType = 'disabled';
+                    } else if(!data.isFriend && !data.hasPendingRequest) {
+                        $scope.userFriendStatus = 'Invite';
+                        $scope.userHoverButtonType = 'enabled';
+                    }
+                }, function (error) {
+                    toaster.pop('error', 'Error!', error.data.message);
+                });
+
+            return true;
         }
     }]);
 

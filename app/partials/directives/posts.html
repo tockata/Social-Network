@@ -8,10 +8,11 @@
                     <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
                     <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
                     <div class="hover-parent">
-                        <a href="#/users/{{post.author.username}}" ng-mouseenter="userPreviewShown = true">
+                        <a href="#/users/{{post.author.username}}" ng-mouseenter="userPreviewShown = showUserPreview(post.author.username)">
                             {{post.author.name}}
                         </a>
                         <br/>
+
                         <div class="panel panel-success user-hover" ng-show="userPreviewShown" ng-mouseleave="userPreviewShown = false">
                             <div class="panel-heading hover-heading">
                                 <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
@@ -19,9 +20,10 @@
                                 <span>{{post.author.name}}</span>
                             </div>
                             <div class="panel-body">
-                                Panel content
+                                <button class="btn btn-warning {{userHoverButtonType}}" ng-click="sendFriendRequest(post.author.username)">{{userFriendStatus}}</button>
                             </div>
                         </div>
+
                         <span>{{post.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
                     </div>
                 </div>
@@ -85,10 +87,22 @@
                 <div class="panel-heading">
                     <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
                     <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
-                    <div>
-                        <a href="#/users/{{comment.author.username}}">
+                    <div class="hover-parent">
+                        <a href="#/users/{{comment.author.username}}" ng-mouseenter="userPreviewShown = showUserPreview(comment.author.username)">
                             {{comment.author.name}}
                         </a>
+
+                        <div class="panel panel-success user-hover" ng-show="userPreviewShown" ng-mouseleave="userPreviewShown = false">
+                            <div class="panel-heading hover-heading">
+                                <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
+                                <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!comment.author.profileImageData"/>
+                                <span>{{comment.author.name}}</span>
+                            </div>
+                            <div class="panel-body">
+                                <button class="btn btn-warning {{userHoverButtonType}}" ng-click="sendFriendRequest(comment.author.username)">{{userFriendStatus}}</button>
+                            </div>
+                        </div>
+
                         <br/>
                         <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
                     </div>
