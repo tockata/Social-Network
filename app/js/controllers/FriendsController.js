@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.controller('FriendsController',
-    ['$scope', '$routeParams', '$location', 'credentials', 'userData', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $routeParams, $location, credentials, userData, friendsData, toaster, defaultProfileImageData) {
+    ['$scope', '$routeParams', '$location', '$timeout', 'credentials', 'userData', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $routeParams, $location, $timeout, credentials, userData, friendsData, toaster, defaultProfileImageData) {
         $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
 
@@ -20,7 +20,8 @@ socialNetworkApp.controller('FriendsController',
                 .$promise
                 .then(function (data) {
                     if(!data.isFriend) {
-                        $location.path('/');
+                        redirectToHome(2000);
+                        toaster.pop('error', 'Error!', 'You can`t see non-friend friends.');
                     }
 
                     $scope.name = data.name;
@@ -42,5 +43,11 @@ socialNetworkApp.controller('FriendsController',
                 result.push(array.slice(i, i + size));
             }
             return result;
+        }
+
+        function redirectToHome(time) {
+            $timeout(function () {
+                $location.path('/');
+            }, time);
         }
     }]);

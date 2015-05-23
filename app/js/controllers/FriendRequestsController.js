@@ -25,7 +25,7 @@ socialNetworkApp.controller('FriendRequestsController',
                                 $scope.requestDetailsShown = false;
                             }
                         });
-                    $route.reload();
+                    //$route.reload();
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
                 });

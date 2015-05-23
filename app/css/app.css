@@ -169,6 +169,10 @@ div.wall-header {
     color: #191970;
 }
 
+.news-feed-comment>div>div>span {
+    color: #3c763d;
+}
+
 .submit-comment-btn {
     margin-top: 37px;
 }
@@ -179,4 +183,14 @@ div.wall-header {
 
 .edit-post-btn {
     margin: 5px;
+}
+
+.hover-parent {
+    position: relative;
+}
+
+.user-hover {
+    position: absolute;
+    top: 20px;
+    left: 35px;
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-socialNetworkApp.controller('WallController',
+socialNetworkApp.controller('UserWallController',
     ['$scope', '$route', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $route, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
         var _defaultStartPostId = 0,
             _defaultPageSize = 5;
@@ -104,7 +104,7 @@ socialNetworkApp.controller('WallController',
                 .$promise
                 .then(function (data) {
                     $scope.posts.unshift(data);
-                    $route.reload();
+                    //$route.reload();
                     toaster.pop('success', 'Post successfully added!', data.message);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message);
@@ -130,7 +130,7 @@ socialNetworkApp.controller('WallController',
                     postData.deletePost(postId)
                         .$promise
                         .then(function (data) {
-                            toaster.pop('error', 'Success!', 'Post deleted successfully.');
+                            toaster.pop('success', 'Success!', 'Post deleted successfully.');
                             object.splice(index, 1);
                         }, function (error) {
                             toaster.pop('error', 'Error!', error.data.message);
@@ -245,7 +245,7 @@ socialNetworkApp.controller('WallController',
                                 $scope.newCommentFormPostId = null;
                                 post.comments.unshift(data);
                                 post.totalCommentsCount++;
-                                toaster.pop('error', 'Success!', 'Comment successfully added.');
+                                toaster.pop('success', 'Success!', 'Comment successfully added.');
                             }, function (error) {
                                 toaster.pop('error', 'Error!', error.data.message);
                             });
