@@ -28,12 +28,15 @@ socialNetworkApp.controller('WallController',
         $scope.unlikeComment = unlikeComment;
         $scope.likeComment = likeComment;
 
+        $scope.deleteComment = deleteComment;
+        $scope.editCommentFormShown = false;
+        $scope.editCommentFormCommentId = null;
+        $scope.showEditCommentForm = showEditCommentForm;
+        $scope.closeEditCommentForm = closeEditCommentForm;
+        $scope.editComment = editComment;
 
-
-        if(!$routeParams.username) {
-            getNewsFeed();
-        } else {
-            getFriendWall();
+        getPosts();
+        if($routeParams.username) {
             userData.getUserFullData($routeParams.username)
                 .$promise
                 .then(function (data) {
@@ -71,24 +74,24 @@ socialNetworkApp.controller('WallController',
                 });
         }
 
-        function getNewsFeed() {
-            postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
-                .$promise
-                .then(function (data) {
-                    $scope.friendWall = data;
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
-                });
-        }
-
-        function getFriendWall() {
-            postData.getFriendWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
-                .$promise
-                .then(function (data) {
-                    $scope.friendWall = data;
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
-                });
+        function getPosts() {
+            if(!$routeParams.username) {
+                postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
+                    .$promise
+                    .then(function (data) {
+                        $scope.posts = data;
+                    }, function (error) {
+                        toaster.pop('error', 'Error!', error.data.message);
+                    });
+            } else {
+                postData.getUserWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
+                    .$promise
+                    .then(function (data) {
+                        $scope.posts = data;
+                    }, function (error) {
+                        toaster.pop('error', 'Error!', error.data.message);
+                    });
+            }
         }
 
         function submitPost(postContent) {
@@ -100,7 +103,7 @@ socialNetworkApp.controller('WallController',
             postData.addPost(post)
                 .$promise
                 .then(function (data) {
-                    $scope.friendWall.unshift(data);
+                    $scope.posts.unshift(data);
                     $route.reload();
                     toaster.pop('success', 'Post successfully added!', data.message);
                 }, function (error) {
@@ -122,12 +125,12 @@ socialNetworkApp.controller('WallController',
         }
 
         function deletePost(postId) {
-            $scope.friendWall.forEach(function (post, index, object) {
+            $scope.posts.forEach(function (post, index, object) {
                 if(post.id == postId) {
                     postData.deletePost(postId)
                         .$promise
                         .then(function (data) {
-                            toaster.pop('error', 'Success!', data.message);
+                            toaster.pop('error', 'Success!', 'Post deleted successfully.');
                             object.splice(index, 1);
                         }, function (error) {
                             toaster.pop('error', 'Error!', error.data.message);
@@ -147,7 +150,7 @@ socialNetworkApp.controller('WallController',
         }
 
         function editPost(postId, postContent) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId && $scope.user.username == post.author.username) {
                     postData.editPost(postId, postContent)
                         .$promise
@@ -155,7 +158,7 @@ socialNetworkApp.controller('WallController',
                             $scope.editPostFormShown = false;
                             $scope.editPostFormPostId = null;
                             post.postContent = data.content;
-                            toaster.pop('error', 'Success!', data.message);
+                            toaster.pop('error', 'Success!', 'Post edited successfully!');
                         }, function (error) {
                             toaster.pop('error', 'Error!', error.data.message);
                         });
@@ -164,9 +167,9 @@ socialNetworkApp.controller('WallController',
         }
 
         function unlikePost(postId) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId) {
-                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                    if(post.author.isFriend || post.wallOwner.isFriend || $scope.user.username == post.author.username) {
                         postData.unlikePost(postId)
                             .$promise
                             .then(function (data) {
@@ -183,9 +186,9 @@ socialNetworkApp.controller('WallController',
         }
 
         function likePost(postId) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId) {
-                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                    if(post.author.isFriend || post.wallOwner.isFriend || $scope.user.username == post.author.username) {
                         postData.likePost(postId)
                             .$promise
                             .then(function (data) {
@@ -208,7 +211,7 @@ socialNetworkApp.controller('WallController',
             postData.getPostComments(postId)
                 .$promise
                 .then(function (data) {
-                    $scope.friendWall.forEach(function (post) {
+                    $scope.posts.forEach(function (post) {
                         if(post.id == postId) {
                             post.comments = data;
                         }
@@ -232,9 +235,9 @@ socialNetworkApp.controller('WallController',
         }
 
         function postComment(commentContent, postId) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId) {
-                    if(post.author.isFriend || post.wallOwner.isFriend) {
+                    if(post.author.isFriend || post.wallOwner.isFriend || $scope.user.username == post.author.username) {
                         commentData.addComment(commentContent, postId)
                             .$promise
                             .then(function (data) {
@@ -257,11 +260,11 @@ socialNetworkApp.controller('WallController',
         }
 
         function unlikeComment(postId, commentId) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId) {
                     post.comments.forEach(function (comment) {
                         if(comment.id == commentId) {
-                            if(post.author.isFriend || post.wallOwner.isFriend) {
+                            if(post.author.isFriend || post.wallOwner.isFriend || $scope.user.username == post.author.username) {
                                 commentData.unlikeComment(postId, commentId)
                                     .$promise
                                     .then(function (data) {
@@ -280,11 +283,11 @@ socialNetworkApp.controller('WallController',
         }
 
         function likeComment(postId, commentId) {
-            $scope.friendWall.forEach(function (post) {
+            $scope.posts.forEach(function (post) {
                 if(post.id == postId) {
                     post.comments.forEach(function (comment) {
                         if(comment.id == commentId) {
-                            if(post.author.isFriend || post.wallOwner.isFriend) {
+                            if(post.author.isFriend || post.wallOwner.isFriend || $scope.user.username == post.author.username) {
                                 commentData.likeComment(postId, commentId)
                                     .$promise
                                     .then(function (data) {
@@ -298,6 +301,59 @@ socialNetworkApp.controller('WallController',
                             }
                         }
                     });
+                }
+            });
+        }
+
+        function deleteComment(postId, commentId) {
+            $scope.posts.forEach(function (post) {
+                if(post.id == postId) {
+                    post.comments.forEach(function (comment, index, object) {
+                        if(comment.id == commentId) {
+                            if ($scope.user.username == comment.author.username || $scope.user.username == post.author.username) {
+                                commentData.deleteComment(postId, commentId)
+                                    .$promise
+                                    .then(function (data) {
+                                        post.totalCommentsCount--;
+                                        toaster.pop('error', 'Success!', 'Comment deleted successfully.');
+                                        object.splice(index, 1);
+                                    }, function (error) {
+                                        toaster.pop('error', 'Error!', error.data.message);
+                                    });
+                            }
+                        }
+                    });
+                }
+            })
+        }
+
+        function showEditCommentForm(commentId) {
+            $scope.editCommentFormShown = true;
+            $scope.editCommentFormCommentId = commentId;
+        }
+
+        function closeEditCommentForm(){
+            $scope.editCommentFormShown = false;
+            $scope.editCommentFormCommentId = null;
+        }
+
+        function editComment(postId, commentId, commentContent) {
+            $scope.posts.forEach(function (post) {
+                if(post.id == postId) {
+                    post.comments.forEach(function (comment) {
+                        if(comment.id == commentId && $scope.user.username == comment.author.username) {
+                            commentData.editComment(commentContent, postId, commentId)
+                                .$promise
+                                .then(function (data) {
+                                    $scope.editCommentFormShown = false;
+                                    $scope.editCommentFormCommentId = null;
+                                    comment.commentContent = data.commentContent;
+                                    toaster.pop('error', 'Success!', 'Comment edited successfully!');
+                                }, function (error) {
+                                    toaster.pop('error', 'Error!', error.data.message);
+                                });
+                        }
+                    })
                 }
             });
         }

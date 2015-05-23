@@ -16,7 +16,7 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
             .get();
     }
 
-    function getFriendWall(username, startPostId, pageSize) {
+    function getUserWall(username, startPostId, pageSize) {
         var authorization = credentials.getAuthorization();
         return $resource(
             baseUrl + 'users/'+ username + '/wall?StartPostId=' + (startPostId || '') + '&PageSize=' + pageSize,
@@ -118,7 +118,7 @@ socialNetworkApp.factory('postData', ['$resource', 'baseUrl', 'credentials', fun
 
     return {
         getNewsFeed: getNewsFeed,
-        getFriendWall: getFriendWall,
+        getUserWall: getUserWall,
         addPost: addPost,
         editPost: editPost,
         deletePost: deletePost,
