@@ -12,9 +12,11 @@
                             {{post.author.name}}
                         </a>
                         <br/>
-                        <div class="panel panel-warning user-hover" ng-show="userPreviewShown" ng-mouseleave="userPreviewShown = false">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Panel info</h3>
+                        <div class="panel panel-success user-hover" ng-show="userPreviewShown" ng-mouseleave="userPreviewShown = false">
+                            <div class="panel-heading hover-heading">
+                                <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
+                                <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
+                                <span>{{post.author.name}}</span>
                             </div>
                             <div class="panel-body">
                                 Panel content

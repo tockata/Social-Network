@@ -194,3 +194,8 @@ div.wall-header {
     top: 20px;
     left: 35px;
 }
+
+.hover-heading>span {
+    font-size: 16px;
+    color: #080808;
+}
