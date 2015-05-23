@@ -114,19 +114,6 @@ socialNetworkApp.controller('UserWallController',
                 })
         }
 
-        function sendFriendRequest(username) {
-            friendsData.sendFriendRequest(username)
-                .$promise
-                .then(function (data) {
-                    $scope.userData.hasPendingRequest = true;
-                    $scope.buttonName = 'Pending request';
-                    $scope.disabledButton = 'disabled';
-                    toaster.pop('success', 'Success!', data.message);
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
-                });
-        }
-
         function deletePost(postId) {
             $scope.posts.forEach(function (post, index, object) {
                 if(post.id == postId) {
@@ -361,11 +348,42 @@ socialNetworkApp.controller('UserWallController',
             });
         }
 
+        function sendFriendRequest(username, userType) {
+            if(userType == 'wallOwner') {
+                friendsData.sendFriendRequest(username)
+                    .$promise
+                    .then(function (data) {
+                        $scope.userData.hasPendingRequest = true;
+                        $scope.buttonName = 'Pending request';
+                        $scope.disabledButton = 'disabled';
+                        toaster.pop('success', 'Success!', data.message);
+                    }, function (error) {
+                        toaster.pop('error', 'Error!', error.data.message);
+                    });
+            } else if(userType == 'postAuthor' || userType == 'commentAuthor') {
+                friendsData.sendFriendRequest(username)
+                    .$promise
+                    .then(function (data) {
+                        $scope.userFriendStatus = 'Pending';
+                        $scope.userHoverButtonType = 'disabled';
+                        toaster.pop('success', 'Success!', data.message);
+                    }, function (error) {
+                        toaster.pop('error', 'Error!', error.data.message);
+                    });
+            }
+        }
+
         function showUserPreview(username) {
+            $scope.userFriendStatus = 'Getting status...';
+            $scope.userHoverButtonType = 'disabled';
+
             userData.getUserPreviewData(username)
                 .$promise
                 .then(function (data) {
-                    if(data.isFriend) {
+                    if(data.username == $scope.user.username) {
+                        $scope.userFriendStatus = 'Me';
+                        $scope.userHoverButtonType = 'disabled';
+                    } else if(data.isFriend) {
                         $scope.userFriendStatus = 'Friend';
                         $scope.userHoverButtonType = 'disabled';
                     } else if(!data.isFriend && data.hasPendingRequest) {

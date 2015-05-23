@@ -196,7 +196,7 @@ div.wall-header {
 }
 
 .user-hover>div>span {
-    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .hover-heading>span {
@@ -205,5 +205,5 @@ div.wall-header {
 }
 
 .panel {
-    word-wrap: break-word;
+    word-break: break-all;
 }
