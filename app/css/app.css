@@ -195,7 +195,15 @@ div.wall-header {
     left: 35px;
 }
 
+.user-hover>div>span {
+    word-wrap: break-word;
+}
+
 .hover-heading>span {
     font-size: 16px;
     color: #080808;
+}
+
+.panel {
+    word-wrap: break-word;
 }

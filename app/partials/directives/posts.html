@@ -8,19 +8,21 @@
                     <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
                     <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
                     <div class="hover-parent">
-                        <a href="#/users/{{post.author.username}}" ng-mouseenter="userPreviewShown = showUserPreview(post.author.username)">
+                        <a href="#/users/{{post.author.username}}" ng-mouseenter="postUserPreviewShown = true">
                             {{post.author.name}}
                         </a>
                         <br/>
 
-                        <div class="panel panel-success user-hover" ng-show="userPreviewShown" ng-mouseleave="userPreviewShown = false">
+                        <div class="panel panel-success user-hover col-md-12" ng-show="postUserPreviewShown" ng-mouseleave="postUserPreviewShown = false">
                             <div class="panel-heading hover-heading">
                                 <img src="" ng-src="{{post.author.profileImageData}}" alt="post.author.name" ng-if="post.author.profileImageData"/>
                                 <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
                                 <span>{{post.author.name}}</span>
                             </div>
                             <div class="panel-body">
-                                <button class="btn btn-warning {{userHoverButtonType}}" ng-click="sendFriendRequest(post.author.username)">{{userFriendStatus}}</button>
+                                <button class="btn btn-warning disabled" ng-if="post.author.isFriend">Friend</button>
+                                <button class="btn btn-warning disabled" ng-if="!post.author.isFriend && post.hasPendingRequest">Pending</button>
+                                <button class="btn btn-warning" ng-click="sendFriendRequest(post.author.username)" ng-if="!post.author.isFriend && !post.hasPendingRequest">Invite</button>
                             </div>
                         </div>
 
