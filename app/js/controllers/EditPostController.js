@@ -1,7 +1,7 @@
 'use strict';
 
 socialNetworkApp.controller('EditPostController',
-    ['$scope', '$route', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $route, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
+    ['$scope', 'postData', 'toaster', function ($scope, postData, toaster) {
         var defaultNotificationTimeout = 2000;
         $scope.editPostFormShown = false;
         $scope.editPostFormPostId = null;

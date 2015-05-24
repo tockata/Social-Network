@@ -43,17 +43,9 @@
                             <span ng-if="newCommentFormPostId !== post.id">Comment</span>
                         </a>
                         <br/>
-                        <div class="form-group" ng-if="showNewCommentForm == true && newCommentFormPostId == post.id">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <label class="control-label" for="inputLarge">New comment</label>
-                                    <input class="form-control input-lg" type="text" id="inputLarge" ng-model="newComment.commentContent">
-                                </div>
-                                <div class="col-md-4">
-                                    <button class="btn btn-primary submit-comment-btn" ng-click="postComment(newComment, post.id)">Submit</button>
-                                </div>
-                            </div>
-                        </div>
+                        
+                        <div new-comment></div>
+
                     </div>
                 </div>
                 <button class="btn btn-danger btn-sm delete-post-btn" ng-if="user.username == post.wallOwner.username || user.username == post.author.username" ng-click="deletePost(post.id)">Delete post</button>
