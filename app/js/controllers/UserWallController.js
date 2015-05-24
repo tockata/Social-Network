@@ -59,9 +59,6 @@ socialNetworkApp.controller('UserWallController',
                         $scope.buttonName = 'My wall';
                         $scope.disabledButton = 'disabled';
                     }
-
-                }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
                 });
         }
 
@@ -80,7 +77,7 @@ socialNetworkApp.controller('UserWallController',
                     .then(function (data) {
                         $scope.posts = data;
                     }, function (error) {
-                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
+                        toaster.pop('error', 'Error!', error.status);
                     });
             }
         }
@@ -264,6 +261,12 @@ socialNetworkApp.controller('UserWallController',
                     .then(function (data) {
                         $scope.userFriendStatus = 'Pending';
                         $scope.userHoverButtonType = 'disabled';
+
+                        if(username.toLowerCase() == $scope.wallOwnerUsername.toLowerCase()) {
+                            $scope.buttonName = 'Pending request';
+                            $scope.disabledButton = 'disabled';
+                        }
+
                         toaster.pop('success', 'Success!', data.message, defaultNotificationTimeout);
                     }, function (error) {
                         toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);

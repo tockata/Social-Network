@@ -70,6 +70,11 @@ var socialNetworkApp = angular
                         $sessionStorage.$reset();
                         $location.path('/');
                     }
+
+                    if(rejection.status == 404) {
+                        $location.path('/');
+                    }
+
                     defer.reject(rejection);
                     return defer.promise;
                 }
