@@ -99,7 +99,7 @@
 
             </div>
 
-            <button class="btn btn-success btn-sm pull-right" ng-if="!allCommentsShown" ng-click="showAllComments(post.id)">More comments</button>
+            <button class="btn btn-success btn-sm pull-right" ng-if="!allCommentsShown && post.totalCommentsCount > 3" ng-click="showAllComments(post.id)">More comments</button>
             <button class="btn btn-success btn-sm pull-right" ng-if="allCommentsShown" ng-click="showLessComments(post.id)">Less comments</button>
         </div>
     </div>
