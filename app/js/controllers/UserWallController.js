@@ -15,7 +15,9 @@ socialNetworkApp.controller('UserWallController',
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
 
+        $scope.allCommentsShown = false;
         $scope.showAllComments = showAllComments;
+        $scope.showLessComments = showLessComments;
         $scope.commentButtonName = 'Comment';
         $scope.unlikeComment = unlikeComment;
         $scope.likeComment = likeComment;
@@ -153,20 +155,27 @@ socialNetworkApp.controller('UserWallController',
         }
 
         function showAllComments(postId) {
-            $scope.postAllComments = {
-                postId: postId
-            };
             postData.getPostComments(postId)
                 .$promise
                 .then(function (data) {
                     $scope.posts.forEach(function (post) {
                         if(post.id == postId) {
                             post.comments = data;
+                            $scope.allCommentsShown = true;
                         }
                     });
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 })
+        }
+
+        function showLessComments(postId) {
+            $scope.posts.forEach(function (post) {
+                if(post.id == postId) {
+                    post.comments = post.comments.slice(0, 3);
+                    $scope.allCommentsShown = false;
+                }
+            });
         }
 
         function unlikeComment(postId, commentId) {

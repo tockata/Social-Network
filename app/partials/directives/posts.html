@@ -56,7 +56,7 @@
             </div>
 
             <!--Comments-->
-            <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in post.comments" ng-if="postAllComments.postId !== post.id">
+            <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in post.comments">
                 <div class="panel-heading">
                     <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
                     <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
@@ -99,51 +99,8 @@
 
             </div>
 
-
-            <!--More comments-->
-            <div class="panel panel-warning news-feed news-feed-comment col-md-offset-3" ng-repeat="comment in post.comments" ng-if="postAllComments.postId == post.id">
-                <div class="panel-heading">
-                    <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
-                    <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!post.author.profileImageData"/>
-                    <div class="hover-parent">
-                        <a href="#/users/{{comment.author.username}}" ng-mouseenter="commentUserPreviewShown = showUserPreview(comment.author.username)">
-                            {{comment.author.name}}
-                        </a>
-                        <br/>
-
-                        <div class="panel panel-success user-hover col-md-8" ng-show="commentUserPreviewShown" ng-mouseleave="commentUserPreviewShown = false">
-                            <div class="panel-heading hover-heading">
-                                <img src="" ng-src="{{comment.author.profileImageData}}" alt="post.author.name" ng-if="comment.author.profileImageData"/>
-                                <img src="" ng-src="{{defaultProfileImageData}}" alt="post.author.name" ng-if="!comment.author.profileImageData"/>
-                                <span>{{comment.author.name}}</span>
-                            </div>
-                            <div class="panel-body">
-                                <button class="btn btn-warning {{userHoverButtonType}}" ng-click="sendFriendRequest(comment.author.username, 'commentAuthor')">{{userFriendStatus}}</button>
-                            </div>
-                        </div>
-
-                        <span>{{comment.date | date:'dd MMM yyyy HH:mm:ss'}}</span>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <span>{{comment.commentContent}}</span>
-                </div>
-                <div class="panel-footer">
-                    <div>Likes:
-                        <span class="badge">{{comment.likesCount}}</span>
-                        <a href="">
-                            <span ng-if="comment.liked && (post.author.isFriend || post.wallOwner.isFriend || user.username == post.author.username)" ng-click="unlikeComment(post.id, comment.id)">Unlike</span>
-                            <span ng-if="!comment.liked && (post.author.isFriend || post.wallOwner.isFriend || user.username == post.author.username)" ng-click="likeComment(post.id, comment.id)">Like</span>
-                        </a>
-                    </div>
-                </div>
-                <button class="btn btn-danger btn-sm delete-post-btn" ng-if="user.username == post.author.username || user.username == comment.author.username" ng-click="deleteComment(post.id, comment.id)">Delete comment</button>
-                <button class="btn btn-info btn-sm edit-post-btn" ng-if="user.username == comment.author.username" ng-click="showEditCommentForm(comment.id)">Edit comment</button>
-
-                <div edit-comment></div>
-
-            </div>
-            <button class="btn btn-success btn-sm pull-right" ng-if="post.totalCommentsCount > 3" ng-click="showAllComments(post.id)">More comments</button>
+            <button class="btn btn-success btn-sm pull-right" ng-if="!allCommentsShown" ng-click="showAllComments(post.id)">More comments</button>
+            <button class="btn btn-success btn-sm pull-right" ng-if="allCommentsShown" ng-click="showLessComments(post.id)">Less comments</button>
         </div>
     </div>
 
