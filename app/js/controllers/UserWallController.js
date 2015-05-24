@@ -14,11 +14,6 @@ socialNetworkApp.controller('UserWallController',
         $scope.deletePost = deletePost;
         $scope.unlikePost = unlikePost;
         $scope.likePost = likePost;
-        $scope.editPostFormShown = false;
-        $scope.editPostFormPostId = null;
-        $scope.showEditPostForm = showEditPostForm;
-        $scope.closeEditPostForm = closeEditPostForm;
-        $scope.editPost = editPost;
 
         $scope.showAllComments = showAllComments;
         $scope.commentButtonName = 'Comment';
@@ -108,7 +103,6 @@ socialNetworkApp.controller('UserWallController',
                 .$promise
                 .then(function (data) {
                     $scope.posts.unshift(data);
-                    //$route.reload();
                     toaster.pop('success', 'Post successfully added!', data.message, defaultNotificationTimeout);
                 }, function (error) {
                     toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
@@ -128,33 +122,6 @@ socialNetworkApp.controller('UserWallController',
                         });
                 }
             })
-        }
-
-        function showEditPostForm(postId) {
-            $scope.editPostFormShown = true;
-            $scope.editPostFormPostId = postId;
-        }
-
-        function closeEditPostForm(){
-            $scope.editPostFormShown = false;
-            $scope.editPostFormPostId = null;
-        }
-
-        function editPost(postId, postContent) {
-            $scope.posts.forEach(function (post) {
-                if(post.id == postId && $scope.user.username == post.author.username) {
-                    postData.editPost(postId, postContent)
-                        .$promise
-                        .then(function (data) {
-                            $scope.editPostFormShown = false;
-                            $scope.editPostFormPostId = null;
-                            post.postContent = data.content;
-                            toaster.pop('error', 'Success!', 'Post edited successfully!', defaultNotificationTimeout);
-                        }, function (error) {
-                            toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
-                        });
-                }
-            });
         }
 
         function unlikePost(postId) {
