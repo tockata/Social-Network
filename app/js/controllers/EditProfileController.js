@@ -13,23 +13,28 @@ socialNetworkApp.controller('EditProfileController',
                 .then(function (data) {
                     $scope.editProfileForm.$setPristine();
                     toaster.pop('success', 'Edit successful!', data.message, 2000);
-                    redirectToHome(2000);
+                    $scope.editUser.name = user.name;
+                    $scope.editUser.email = user.email;
+                    $scope.editUser.profileImageData = user.profileImageData;
+                    $scope.editUser.coverImageData = user.coverImageData;
+                    $scope.editUser.gender = user.gender;
+                    redirectToWall($scope.editUser.username, 2000);
                 }, function (error) {
                     toaster.pop('error', 'Edit profile error!', error.data.message, 2000);
                 })
         }
 
         function formatProfileImgToBase64() {
-            $scope.editUser.profileImageData = 'data:image/jpg;base64,' + $scope.editUser.profileImageData.base64;
+            $scope.editUserData.profileImageData = 'data:image/jpg;base64,' + $scope.editUserData.profileImageData.base64;
         }
 
         function formatCoverImgToBase64() {
-            $scope.editUser.coverImageData = 'data:image/jpg;base64,' + $scope.editUser.coverImageData.base64;
+            $scope.editUserData.coverImageData = 'data:image/jpg;base64,' + $scope.editUserData.coverImageData.base64;
         }
 
-        function redirectToHome(time) {
+        function redirectToWall(user, time) {
             $timeout(function () {
-                $location.path('/');
+                $location.path('/users/' + user);
             }, time);
         }
     }

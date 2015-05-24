@@ -12,7 +12,7 @@ socialNetworkApp.controller('RegisterController',
                     credentials.saveLoggedUser(user);
                     credentials.saveTokenInSessionStorage(data.access_token, data.token_type);
                     $scope.registerForm.$setPristine();
-                    toaster.pop('success', 'Register successful!', defaultNotificationTimeout);
+                    toaster.pop('success', 'Register successful!', null, defaultNotificationTimeout);
                     reloadRoute(2000);
                 }, function (error) {
                     toaster.pop('error', 'Registration error!', error.data.message, defaultNotificationTimeout);
