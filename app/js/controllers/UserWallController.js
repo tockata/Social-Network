@@ -2,8 +2,9 @@
 
 socialNetworkApp.controller('UserWallController',
     ['$scope', '$route', '$routeParams', 'userData', 'friendsData', 'postData', 'commentData', 'credentials', 'toaster', 'defaultProfileImageData', 'defaultCoverImageData', function ($scope, $route, $routeParams, userData, friendsData, postData, commentData, credentials, toaster, defaultProfileImageData, defaultCoverImageData) {
-        var _defaultStartPostId = 0,
-            _defaultPageSize = 5;
+        var defaultStartPostId = 0,
+            defaultPageSize = 5,
+            defaultNotificationTimeout = 2000;
         $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
         $scope.sendFriendRequest = sendFriendRequest;
@@ -79,20 +80,20 @@ socialNetworkApp.controller('UserWallController',
 
         function getPosts() {
             if(!$routeParams.username) {
-                postData.getNewsFeed(_defaultStartPostId, _defaultPageSize)
+                postData.getNewsFeed(defaultStartPostId, defaultPageSize)
                     .$promise
                     .then(function (data) {
                         $scope.posts = data;
                     }, function (error) {
-                        toaster.pop('error', 'Error!', error.data.message);
+                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                     });
             } else {
-                postData.getUserWall($routeParams.username, _defaultStartPostId, _defaultPageSize)
+                postData.getUserWall($routeParams.username, defaultStartPostId, defaultPageSize)
                     .$promise
                     .then(function (data) {
                         $scope.posts = data;
                     }, function (error) {
-                        toaster.pop('error', 'Error!', error.data.message);
+                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                     });
             }
         }
@@ -108,9 +109,9 @@ socialNetworkApp.controller('UserWallController',
                 .then(function (data) {
                     $scope.posts.unshift(data);
                     //$route.reload();
-                    toaster.pop('success', 'Post successfully added!', data.message);
+                    toaster.pop('success', 'Post successfully added!', data.message, defaultNotificationTimeout);
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 })
         }
 
@@ -120,10 +121,10 @@ socialNetworkApp.controller('UserWallController',
                     postData.deletePost(postId)
                         .$promise
                         .then(function (data) {
-                            toaster.pop('success', 'Success!', 'Post deleted successfully.');
+                            toaster.pop('success', 'Success!', 'Post deleted successfully.', defaultNotificationTimeout);
                             object.splice(index, 1);
                         }, function (error) {
-                            toaster.pop('error', 'Error!', error.data.message);
+                            toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                         });
                 }
             })
@@ -148,9 +149,9 @@ socialNetworkApp.controller('UserWallController',
                             $scope.editPostFormShown = false;
                             $scope.editPostFormPostId = null;
                             post.postContent = data.content;
-                            toaster.pop('error', 'Success!', 'Post edited successfully!');
+                            toaster.pop('error', 'Success!', 'Post edited successfully!', defaultNotificationTimeout);
                         }, function (error) {
-                            toaster.pop('error', 'Error!', error.data.message);
+                            toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                         });
                 }
             });
@@ -166,10 +167,10 @@ socialNetworkApp.controller('UserWallController',
                                 post.liked = false;
                                 post.likesCount--;
                             }, function (error) {
-                                toaster.pop('error', 'Error!', error.data.message);
+                                toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                             });
                     } else {
-                        toaster.pop('error', 'Error!', 'You can`t unlike this post!');
+                        toaster.pop('error', 'Error!', 'You can`t unlike this post!', defaultNotificationTimeout);
                     }
                 }
             });
@@ -185,10 +186,10 @@ socialNetworkApp.controller('UserWallController',
                                 post.liked = true;
                                 post.likesCount++;
                             }, function (error) {
-                                toaster.pop('error', 'Error!', error.data.message);
+                                toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                             });
                     } else {
-                        toaster.pop('error', 'Error!', 'You can`t like this post!');
+                        toaster.pop('error', 'Error!', 'You can`t like this post!', defaultNotificationTimeout);
                     }
                 }
             });
@@ -206,9 +207,8 @@ socialNetworkApp.controller('UserWallController',
                             post.comments = data;
                         }
                     });
-                    //$scope.postAllComments.comments = data;
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 })
         }
 
@@ -235,15 +235,16 @@ socialNetworkApp.controller('UserWallController',
                                 $scope.newCommentFormPostId = null;
                                 post.comments.unshift(data);
                                 post.totalCommentsCount++;
-                                toaster.pop('success', 'Success!', 'Comment successfully added.');
+                                toaster.pop('success', 'Success!', 'Comment successfully added.', defaultNotificationTimeout);
                             }, function (error) {
-                                toaster.pop('error', 'Error!', error.data.message);
+                                toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                             });
                     } else {
                         toaster.pop(
                             'error',
                             'Error!',
-                            'You can`t comment on posts when neither the author, nor wall owner is a friend.');
+                            'You can`t comment on posts when neither the author, nor wall owner is a friend.',
+                            defaultNotificationTimeout);
                     }
                 }
             });
@@ -261,10 +262,10 @@ socialNetworkApp.controller('UserWallController',
                                         comment.liked = false;
                                         comment.likesCount--;
                                     }, function (error) {
-                                        toaster.pop('error', 'Error!', error.data.message);
+                                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                                     });
                             } else {
-                                toaster.pop('error', 'Error!', 'You can`t unlike this comment!');
+                                toaster.pop('error', 'Error!', 'You can`t unlike this comment!', defaultNotificationTimeout);
                             }
                         }
                     });
@@ -284,10 +285,10 @@ socialNetworkApp.controller('UserWallController',
                                         comment.liked = true;
                                         comment.likesCount++;
                                     }, function (error) {
-                                        toaster.pop('error', 'Error!', error.data.message);
+                                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                                     });
                             } else {
-                                toaster.pop('error', 'Error!', 'You can`t like this comment!');
+                                toaster.pop('error', 'Error!', 'You can`t like this comment!', defaultNotificationTimeout);
                             }
                         }
                     });
@@ -305,10 +306,10 @@ socialNetworkApp.controller('UserWallController',
                                     .$promise
                                     .then(function (data) {
                                         post.totalCommentsCount--;
-                                        toaster.pop('error', 'Success!', 'Comment deleted successfully.');
+                                        toaster.pop('error', 'Success!', 'Comment deleted successfully.', defaultNotificationTimeout);
                                         object.splice(index, 1);
                                     }, function (error) {
-                                        toaster.pop('error', 'Error!', error.data.message);
+                                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                                     });
                             }
                         }
@@ -338,9 +339,9 @@ socialNetworkApp.controller('UserWallController',
                                     $scope.editCommentFormShown = false;
                                     $scope.editCommentFormCommentId = null;
                                     comment.commentContent = data.commentContent;
-                                    toaster.pop('error', 'Success!', 'Comment edited successfully!');
+                                    toaster.pop('error', 'Success!', 'Comment edited successfully!', defaultNotificationTimeout);
                                 }, function (error) {
-                                    toaster.pop('error', 'Error!', error.data.message);
+                                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                                 });
                         }
                     })
@@ -356,9 +357,9 @@ socialNetworkApp.controller('UserWallController',
                         $scope.userData.hasPendingRequest = true;
                         $scope.buttonName = 'Pending request';
                         $scope.disabledButton = 'disabled';
-                        toaster.pop('success', 'Success!', data.message);
+                        toaster.pop('success', 'Success!', data.message, defaultNotificationTimeout);
                     }, function (error) {
-                        toaster.pop('error', 'Error!', error.data.message);
+                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                     });
             } else if(userType == 'postAuthor' || userType == 'commentAuthor') {
                 friendsData.sendFriendRequest(username)
@@ -366,9 +367,9 @@ socialNetworkApp.controller('UserWallController',
                     .then(function (data) {
                         $scope.userFriendStatus = 'Pending';
                         $scope.userHoverButtonType = 'disabled';
-                        toaster.pop('success', 'Success!', data.message);
+                        toaster.pop('success', 'Success!', data.message, defaultNotificationTimeout);
                     }, function (error) {
-                        toaster.pop('error', 'Error!', error.data.message);
+                        toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                     });
             }
         }

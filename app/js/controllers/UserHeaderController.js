@@ -2,6 +2,7 @@
 
 socialNetworkApp.controller('UserHeaderController',
     ['$scope', '$location', '$route', '$timeout', 'credentials', 'userData', 'friendsData', 'defaultProfileImageData', 'toaster', function ($scope, $location, $route, $timeout, credentials, userData, friendsData, defaultProfileImageData, toaster){
+        var defaultNotificationTimeout = 2000;
         $scope.isActive = function (viewLocation) {
             return viewLocation === $location.path();
         };
@@ -20,7 +21,7 @@ socialNetworkApp.controller('UserHeaderController',
                 $scope.requestsCount = data.length;
                 $scope.requests = data;
             }, function (error) {
-                toaster.pop('error', 'Error!', error.data.message);
+                toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 credentials.deleteCredentials();
                 $route.reload();
             });

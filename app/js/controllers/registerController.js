@@ -2,6 +2,7 @@
 
 socialNetworkApp.controller('RegisterController',
     ['$scope', '$route', '$timeout', 'userData', 'credentials', 'toaster', function ($scope, $route, $timeout, userData, credentials, toaster) {
+        var defaultNotificationTimeout = 2000;
         $scope.register = register;
 
         function register(user, registerForm) {
@@ -11,10 +12,10 @@ socialNetworkApp.controller('RegisterController',
                     credentials.saveLoggedUser(user);
                     credentials.saveTokenInSessionStorage(data.access_token, data.token_type);
                     $scope.registerForm.$setPristine();
-                    toaster.pop('success', 'Register successful!');
+                    toaster.pop('success', 'Register successful!', defaultNotificationTimeout);
                     reloadRoute(2000);
                 }, function (error) {
-                    toaster.pop('error', 'Registration error!', error.data.message);
+                    toaster.pop('error', 'Registration error!', error.data.message, defaultNotificationTimeout);
                 })
         }
 

@@ -2,6 +2,7 @@
 
 socialNetworkApp.controller('FriendsController',
     ['$scope', '$routeParams', '$location', '$timeout', 'credentials', 'userData', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $routeParams, $location, $timeout, credentials, userData, friendsData, toaster, defaultProfileImageData) {
+        var defaultNotificationTimeout = 2000;
         $scope.user = credentials.getLoggedUser();
         $scope.defaultProfileImageData = defaultProfileImageData;
 
@@ -13,7 +14,7 @@ socialNetworkApp.controller('FriendsController',
                     $scope.totalCount = data.length;
                     $scope.friends = splitData(data, 2);
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 });
         } else {
             userData.getUserFullData($routeParams.username)
@@ -21,12 +22,12 @@ socialNetworkApp.controller('FriendsController',
                 .then(function (data) {
                     if(!data.isFriend) {
                         redirectToHome(2000);
-                        toaster.pop('error', 'Error!', 'You can`t see non-friend friends.');
+                        toaster.pop('error', 'Error!', 'You can`t see non-friend friends.', defaultNotificationTimeout);
                     }
 
                     $scope.name = data.name;
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 });
 
             friendsData.getOtherUserFriends($routeParams.username)

@@ -12,10 +12,10 @@ socialNetworkApp.controller('EditProfileController',
                 .$promise
                 .then(function (data) {
                     $scope.editProfileForm.$setPristine();
-                    toaster.pop('success', 'Edit successful!', data.message);
+                    toaster.pop('success', 'Edit successful!', data.message, 2000);
                     redirectToHome(2000);
                 }, function (error) {
-                    toaster.pop('error', 'Edit profile error!', error.data.message);
+                    toaster.pop('error', 'Edit profile error!', error.data.message, 2000);
                 })
         }
 

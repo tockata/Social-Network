@@ -23,12 +23,12 @@ socialNetworkApp.controller('LoginController',
                             $scope.loginForm.$setPristine();
                             reloadRoute(1000);
                         }, function (error) {
-                            toaster.pop('error', 'Login error!', error.data.message);
+                            toaster.pop('error', 'Login error!', error.data.message, 1500);
                             credentials.deleteCredentials();
                             $route.reload();
                         });
                 }, function (error) {
-                    toaster.pop('error', 'Login error!', error.data.message);
+                    toaster.pop('error', 'Login error!', error.error_description, 1500);
                 });
         }
 

@@ -2,6 +2,7 @@
 
 socialNetworkApp.controller('FriendRequestsController',
     ['$scope', '$route', 'friendsData', 'toaster', 'defaultProfileImageData', function ($scope, $route, friendsData, toaster, defaultProfileImageData) {
+        var defaultNotificationTimeout = 2000;
         $scope.acceptRequest = acceptRequest;
         $scope.rejectRequest = rejectRequest;
         $scope.cancel = cancel;
@@ -15,7 +16,7 @@ socialNetworkApp.controller('FriendRequestsController',
             friendsData.approveFriendRequest(requestId)
                 .$promise
                 .then(function (data) {
-                    toaster.pop('success', 'Success!', data.message);
+                    toaster.pop('success', 'Success!', data.message, defaultNotificationTimeout);
                     friendsData.getFriendRequests()
                         .$promise
                         .then(function (data) {
@@ -25,9 +26,8 @@ socialNetworkApp.controller('FriendRequestsController',
                                 $scope.requestDetailsShown = false;
                             }
                         });
-                    //$route.reload();
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 });
         }
 
@@ -35,7 +35,7 @@ socialNetworkApp.controller('FriendRequestsController',
             friendsData.rejectFriendRequest(requestId)
                 .$promise
                 .then(function (data) {
-                    toaster.pop('success', 'Success!', data.message);
+                    toaster.pop('success', 'Success!', data.message, defaultNotificationTimeout);
                     friendsData.getFriendRequests()
                         .$promise
                         .then(function (data) {
@@ -46,7 +46,7 @@ socialNetworkApp.controller('FriendRequestsController',
                             }
                         });
                 }, function (error) {
-                    toaster.pop('error', 'Error!', error.data.message);
+                    toaster.pop('error', 'Error!', error.data.message, defaultNotificationTimeout);
                 });
         }
     }]);
