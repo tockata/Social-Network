@@ -91,6 +91,18 @@ body>div>div.row {
 #friend-container {
     width: 100%;
     height: 100%;
+    word-break: break-all;
+}
+
+#friend-container>div {
+    float: left;
+}
+
+#friend-container>h4 {
+    float: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 150px;
 }
 
 td:hover {
